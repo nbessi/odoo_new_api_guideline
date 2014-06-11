@@ -141,7 +141,7 @@ As each assignement will trigger a write action on database: ::
 
 On this sample each assignement will trigger a write.
 As the function is decorated with `@api.one` for each record in RecordSet write will be called 3 time
-So if zou have 10 record on recordset number of write will be 10*3 = 30.
+So if you have 10 records in recordset the number of write will be 10*3 = 30.
 
 This may not cause any problems if you are in a simple on change context but on an heavy task you should: ::
 
