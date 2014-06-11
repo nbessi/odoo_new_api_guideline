@@ -5,6 +5,10 @@ Now fields are class property.
 It uses Python property mechanins under the hoods: ::
   # import to do
   name = Char()
+.. _fields_inherit:
+
+Fields inheritance
+------------------
 
 Fields types
 ------------

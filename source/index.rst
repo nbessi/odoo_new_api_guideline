@@ -7,14 +7,25 @@ Welcome to Odoo new API guideline's
 ===================================
 
 Overview
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
+
+   environment
+   fields
+   decorator
+   introspection
 
 
 
-Conventions
+Conventions and code update
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
+
+   conventions
+   compatibility
+   test
 
 Indices and tables
 ==================

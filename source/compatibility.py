@@ -1,5 +1,5 @@
-Compatibility
-=============
+Compatibility specificities
+============================
 working on self will use Recordset.
 But there is a special object that is the old model.
 
@@ -12,6 +12,11 @@ self
 self.env
 
 will call recodset.
+
+@return
+=======
+@model
+=======
 
 Migrating code
 --------------
