@@ -12,6 +12,7 @@ Some aspect of the API will not change with this release like the domain syntax
 
 Model
 -----
+
 A model is a representation of a business Object.
 
 It is bascially a class that have has class property various fields that are stored in Database.
@@ -21,10 +22,10 @@ This paradigm has changes as generaly you should not access Model directly but a
 
 To instanciate a model you must inherit an openerp.model.Model: ::
 
-    from openerp import Model, fields, api, _
+    from openerp import models, fields, api, _
 
 
-    class MyModel(Model):
+    class MyModel(models.Model):
 
         _name = 'a.model' #  Model identifer used for table name
 
@@ -51,6 +52,7 @@ For fields inheritance please :ref:`fields_inherit`
 
 Recordset
 ---------
+
 All instances of Model are at the same time an instance of a RecordSet.
 A Recorset represents a sorted set of record of the same Model of the RecordSet.
 
@@ -82,6 +84,7 @@ If you use it on a record set it will break if recordset does not contains only 
 
 Supported opperations
 ---------------------
+
 Record set support set opperation
 you can add, union and intersect recordset: ::
 
@@ -117,6 +120,9 @@ I propose abstaction over database using caches and query generation: ::
   record.partner_id.name
   >>> partner name
 
+
+.. _ac_pattern:
+
 Active Record Pattern
 #####################
 
@@ -133,6 +139,8 @@ Active Record Pattern Be Careful
 
 Writing value using Active Record pattern must be done carefully.
 As each assignement will trigger a write action on database: ::
+
+
     @api.one
     def dangerous_write(self):
       self.x = 1
@@ -155,20 +163,9 @@ This may not cause any problems if you are in a simple on change context but on 
        #same value on all records
        self.write({'x': 1, 'y': 2, 'z': 4})
 
-M2m one2m behavior.
-####################
-One2many and Many2many fields have some special behavior to be taken in account.
-At that time (This may change at release) using create on a multiple relation fields
-will not introspect to look for relation. ::
-
-  self.line_ids.create({'name': 'Tho'}) #  this will fail as order is not set
-  self.line_ids.create({'name': 'Tho', 'order_id': self.id}) #  this will work
-  self.line_ids.write({'name': 'Tho'}) #  this will write all related lines
-
-
-
 Chain of browse null
 ####################
+
 !!Subject to changes!!
 
 Empty relation now return Null Value.
@@ -178,6 +175,7 @@ Each relation will be chained and a Null should be return at the end.
 
 Environment
 ===========
+
 In the new API the notion of Environment is introduced.
 His main objective is to provide an encapsulation around
 cursor, user_id, model, and context, Recordset and caches
@@ -208,6 +206,7 @@ it  also store the caches or recordset etc.
 
 Modifing environnement
 ----------------------
+
 If you need to use modifiy your current context you
 may use the with_context() function. ::
 
@@ -232,6 +231,7 @@ Environement provides an helper to switch user: ::
 
 Cleaning environnement caches
 -----------------------------
+
 As explained previously An environnement maintain multiple caches
 That are triggered by the Moded/Fields classes.
 
@@ -245,64 +245,141 @@ Commons action
 
 Searching
 ---------
+Serching has not change a lot. Sadly the domain changes
+announced in di not match release 8.0.
+
+You will find main changes below
 
 search
 ######
-Now seach function return directly a RecordSet
+
+Now seach function return directly a RecordSet: ::
+
+    self.search([('is_company', '=', True)])
+    >>> res.partner(7, 6, 18, 12, 14, 17, 19, 8,...)
+    self.search([('is_company', '=', True)])[0].name
+    >>> 'Camptocamp'
+
+You can do a search using env: ::
+
+    self.env['res.users'].search([('login', '=', 'admin')])
+    >>> res.users(1,)
 
 
 search_read
 ###########
-Now seach function return directly a list of dict
 
+A search read function is now available. It will do a search
+and return list of dict.
+
+Here we retrieve all partners name: ::
+
+    self.search_read([], ['name'])
+    >>> [{'id': 3, 'name': u'Administrator'},
+        {'id': 7, 'name': u'Agrolait'},
+        {'id': 43, 'name': u'Michel Fletcher'},
+        ...]
 
 search_count
 ############
-Retruns count of ids
+Returns count of result matching search domain: ::
 
+    self.search_count([('is_company', '=', True)])
+    >>> 26L
 
 Browsing
 --------
-Just get ids / id
+Browsing consist of the strandard way to obtain Records from the
+database. Now browsing will return a RecordSet: ::
+
+    self.browse([1, 2, 3])
+    >>> res.partner(1, 2, 3)
+
+More info about record :ref:`records`
+
 
 writing
 -------
 
+Using Active Record pattern
+###########################
+
+You can now write using Active Record pattern: ::
+
+    @api.one
+    def any_write(self):
+      self.x = 1
+      self.name = 'a'
+
+More info about the subtility of the Active Record Pattern  write function here :ref:`records`
+
+The classical way of writing is still available
+
 From record
 ###########
 
-@api.one
-...
-self.KYwrite({'key': value })
-or
-record.write({'key': value})
-or
-record.name = value # it will call write behind the hood
+From Record:  ::
+
+    @api.one
+    ...
+    self.write({'key': value })
+    # or
+    record.write({'key': value})
+
 
 From RecordSet
 ##############
 
-@api.mutli
-...
-self.write({'key': value })
-it will write on all record.
+From RecordSet: ::
 
-!! if you do self.name only first record will be written
+    @api.mutli
+    ...
+    self.write({'key': value })
+    # It will write on all record.
+    self.line_ids.write({'key': value })
 
-self.line_ids.write({'key': value })
+It will write on all record set of the relation line_ids
 
-will write on all record set of the relation line_ids
 
-From Model
-##########
-TODO
+M2m one2m behavior.
+####################
+
+One2many and Many2many fields have some special behavior to be taken in account.
+At that time (This may change at release) using create on a multiple relation fields
+will not introspect to look for relation. ::
+
+  self.line_ids.create({'name': 'Tho'}) #  this will fail as order is not set
+  self.line_ids.create({'name': 'Tho', 'order_id': self.id}) #  this will work
+  self.line_ids.write({'name': 'Tho'}) #  this will write all related lines
+
+
+
 
 Copy
 ----
+!!! Subjet to changes still buggy !!!
 
-TODO
+From Record
+###########
 
-copy data
+From Record: ::
+
+    @api.one
+    ...
+    self.copy()
+    >>> broken
+
+
+From RecordSet
+##############
+
+From RecordSet: ::
+
+    @api.multi
+    ...
+    self.copy()
+    >>> broken
+
 
 
 Dry run
