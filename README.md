@@ -10,7 +10,7 @@ Overview
 --------
 
    * [Environment](source/environment.rst)
-   * [Fields](source/environment.rst)
+   * [Fields](source/fields.rst)
    * [Decorators](source/decorator.rst)
    * [Introspection](source/introspection.rst)  
 
