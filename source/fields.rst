@@ -1,5 +1,5 @@
- Fields
-========
+Fields
+======
 
 Now fields are class property.
 It uses Python property under the hoods: ::
