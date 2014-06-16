@@ -1,9 +1,10 @@
 Conventions
 ===========
 
-
-Class should use CamelCase
-##########################
+Snake_casing or CamelCasing
+---------------------------
+That was not clear.
+R. Collet wants the example of name collision to choose wich solutionis best
 
 Imports
 -------
@@ -13,7 +14,7 @@ This convention should be the one to use after RC1.
 Model
 #####
 
-from openerp import model
+from openerp import models
 
 Fields
 ######
@@ -39,17 +40,18 @@ Classes
 -------
 Class should be initialized like this: ::
 
-class Toto(model.Model):
+class Toto(models.Model):
    pass
 
 New Exceptions classes
 ----------------------
 
-exceptions.except_orm/orm.except_orm is deprecated.
-You should uses
+`except_orm` exception is deprecated.
+We should use `openerp.exceptions.Warning` and subclasses instances
 
 RedirectWarning
 ###############
+
 Warning with a possibility to redirect the user instead of simply
 diplaying the warning message.
 
@@ -60,18 +62,22 @@ the redirection.
 
 AccessDenied
 ############
+
 Login/password error. No message, no traceback
 
 AccessError
 ###########
-""" Access rights error. """
+
+Access rights error.
 
 class MissingError:
 ###################
+
 Missing record(s)
 
 DeferredException:
 ##################
+
 Exception object holding a traceback for asynchronous reporting.
 
 Some RPC calls (database creation and report generation) happen with
@@ -82,78 +88,92 @@ the first request, and is then sent to a polling request.
 ('Traceback' is misleading, this is really a exc_info() triple.)
 
 
+Compatibility
+#############
+
+When catching orm exception we should catch both type of exceptions: ::
+
+    try:
+        pass
+    except(Waring, except_orm) as exc:
+        pass
+
+
 Fields
 ------
 
-Field should be done instanciante using new fields
-Putting string key is better as explicit is better than implicit: ::
+Fields should be declared using new fields API.
+Putting string key is better than using  a long property name: ::
 
-    class AClass(model.Model):
-        name = fields.Char(strin
+    class AClass(models.Model):
+
+        name = fields.Char(string="This is a really long long name") # ok
+        really_long_long_long_name = fields.char()
+
+That said the property name must be meaningfull. Avoid name like 'nb' etc.
+
+
 Default or compute
-==================
-TODO
+------------------
+
+Compute option should not be used as a workaround to set default.
+Defaut should only be used to provide property initialisation.
+
+That said they may share same function
 
 Modifing self in method
-=======================
+-----------------------
 
-Refer to env TODO
-
-Do not do it.
+We should never alter self in a Model function.
+It will break the correlation with current environement caches.
 
 
 Doing thing in dry run
-======================
+----------------------
+
 if you use the do_in_draft contenxt manager of Environnement
 It will not be committed but only be done in cache.
 
 
 Using Cursor
-============
+------------
 
-When using cursor you should use environnement cursor: ::
+When using cursor you should use current environnement cursor: ::
+
       self.env.cr
-Then you cau use cursor like in previous API
 
-Using thread
-============
-When using thread you have to create you own cursor
-and initiate a new environnement for each thread.
-committing is done by committing the cursor.
+except if you need to use threads: ::
 
-   with Environment.manage(): #class function
-      env = Environnement(cr, uid, context)
+    with Environment.manage(): #class function
+        env = Environnement(cr, uid, context)
 
-Name get
-========
-_name_get is deprecated.
-You should override the display_name fields compute fucntion:
-compute key
-inverse key
+Displayed Name
+--------------
+
+`_name_get` is deprecated.
+
+You should override the display_name fields compute function:
+ * compute
+ * inverse
 
 
 Constraint
-==========
-Should be done using @api.constraints decorator in
+----------
+Should be done using `@api.constraints` decorator in
 conjunction with the @api.one if performance allows it.
-
-todo ref to @api.constraints
 
 
 Qweb view or not Qweb view
-=========================
+--------------------------
 
 If no advance behavior is needed on Model view,
 standard view (non Qweb) should be the preferred choice.
 
 
 Javascript and Website related code
-===================================
+-----------------------------------
 
 General guideline should be found:
 
  * https://doc.openerp.com/trunk/web/guidelines/
  * https://doc.openerp.com/trunk/server/howto/howto_website/
-Templating using Qweb
----------------------
-When showing partner

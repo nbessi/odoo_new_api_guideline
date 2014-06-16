@@ -20,7 +20,8 @@ It uses Python property under the hoods: ::
         inverse="_write_name"            #  On update trigger
         required=True,                   #  Mandatory field
         translate=True,                  #  Translation enable
-        help='blabla'                    #  Help tooltip text
+        help='blabla',                   #  Help tooltip text
+        company_dependent=True,          #  Transform columns to ir.property
     )
 
    # the string key is not mandatory
@@ -216,7 +217,7 @@ Specific options:
   * columns2: relational table right column name
 
 
-Name conflicts
+Name Conflicts
 --------------
 !! fields anf method name can conflict.
 
@@ -243,33 +244,32 @@ You can attribute it a value or a function
 Using a fun will force you to define function brfore fields definition.
 
 
-Computed fields
+
+
+Computed Fields
 ---------------
 There is no more direct creation of fields.function.
 
-Instead you add a compute key. the value is the name of the function as a string.
-This allows to have fields definition atop of class.
+Instead you add a `compute` key. the value is the name of the function as a string.
+This allows to have fields definition atop of class: ::
 
-The signature of the function is self.
+    class AModel(models.Model):
+        _name = 'a_name'
 
+        computed_total = fields.Float(compute='compute_total')
 
-Older attibute are kept
+        def compute_total(self):
+            ...
+            self.computed_total = x
 
-Also all result are stored in a cache so when accessing again cache should be used: ::
-
-@api.one
-@api.depends('name', parent_id)
-_display_name(self):
-  """Self represent the record set to workon
-  """
-  names = [self.parent_id.name, self.name]
 
 The function can be void.
 It should modifiy record property in order to be written to the cache: ::
   self.name = new_value
 
-If you need to do bulk change for performance you can remove
-the @api.one decorator and do bulk write.
+Be aware that this assignation will trigger a write into the database.
+If you need to do bulk change or must be carful about performance.
+You should do classic call to write
 
 
 Inverse
@@ -279,20 +279,18 @@ The inverse key allows to trigger call of the function
 When the fields is written/"created"
 
 
-Multi fields
+Multi Fields
 ------------
-To have one function that compute multiples values
-@api.multi
-@api.depends('field.relation', 'an_otherfields.relation' )
-def _amount(self):
-   for x in self:
-     x.total = an_algo
-     x.untaxed = an_algo
-
-Cache is invalidated and all updated fields are updated at the end.
+To have one function that compute multiples values: ::
+    @api.multi
+    @api.depends('field.relation', 'an_otherfields.relation' )
+    def _amount(self):
+       for x in self:
+         x.total = an_algo
+         x.untaxed = an_algo
 
 
-Related field
+Related Field
 -------------
 
 There is not anymore related fields.related type.
@@ -312,9 +310,20 @@ updated. sweet. ::
                                 store=True,
                                 related='partner_id.name')
 
-!! When updating an related field translation not all
-translation for related field are yet translated if field
-is stored
+!! When updating any related field not all
+translations of related field are yet translated if field
+is stored!!
 
 Chain related fields modification will trigger invalidation of the cache
-for all element of the chain
+for all elements of the chain
+
+
+Property Field
+--------------
+
+There is some use cases where value of the fields must change depending of
+the current company.
+
+To activate such behavior you can now use the `company_depending` option.
+
+A notable evolution in new API is that "property fields" are now serchable

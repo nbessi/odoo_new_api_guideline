@@ -2,12 +2,13 @@ Record/Recordset and Model
 ==========================
 
 The new version 8.0 of OpenERP/Odoo introduce a new ORM API.
-It intends to add more coherent and concise syntax and provide a bi-directional compatiblity.
 
-The new API keeps his previous root design as Model and record but now adds
+It intends to add a more coherent and concise syntax and provide a bi-directional compatiblity.
+
+The new API keeps his previous root design as Model and Record but now adds
 new concept like Environnement and Recordset.
 
-Some aspect of the API will not change with this release like the domain syntax
+Some aspects of the previous API will not change with this release, e.g. the domain syntax
 
 
 Model
@@ -70,11 +71,11 @@ You can call function on recordset: ::
                print record
 
 In this example the function are define at model level but when executing the code
-the `self` varibale is in fact a instance of RecordSet containing many records.
+the ``self`` varibale is in fact a instance of RecordSet containing many records.
 
-So the self passe in the `do_something` is a RecordSet holding a list of records.
+So the self passe in the ``do_something`` is a RecordSet holding a list of records.
 
-If you decorate a function with `@api.one` it will automagically loop
+If you decorate a function with ``@api.one`` it will automagically loop
 on the recording and self will this time be a Record.
 
 As described in :ref:`records` you have now access to an pseudo active record pattern
@@ -82,7 +83,7 @@ As described in :ref:`records` you have now access to an pseudo active record pa
 If you use it on a record set it will break if recordset does not contains only one item.
 
 
-Supported opperations
+Supported Opperations
 ---------------------
 
 Record set support set opperation
@@ -96,15 +97,18 @@ you can add, union and intersect recordset: ::
     recset1 - recset2 #  difference
     recset.copy() # to copy recordset (not a deep copy)
 
-Only the `+`  operator preserves order
+Only the ``+``  operator preserves order
 
 RecordSet can also be sorted: ::
 
   sorted(recordset, key=lambda x: x.column)
 
 
-The ids attribute
+The ids Attribute
 -----------------
+
+The ids attribute is a special attribute of RecordSet.
+It will be return even if there is more than one Record in RecordSet
 
 .. _records:
 
@@ -121,6 +125,18 @@ I propose abstaction over database using caches and query generation: ::
   >>> partner name
 
 
+Displayed Name of Record
+########################
+
+With new API the function name_get is deprecated.
+Now it uses the column named display_name.
+
+This column should be a computed fields with :
+
+  * compute
+  * inverse
+
+
 .. _ac_pattern:
 
 Active Record Pattern
@@ -133,6 +149,7 @@ You can now write to database by setting propertx: ::
   record.name = 'new name'
 
 This will update value on the cache and call the write function to  trigger a write action on the Database.
+
 
 Active Record Pattern Be Careful
 ################################
@@ -148,7 +165,7 @@ As each assignement will trigger a write action on database: ::
       self.z = 4
 
 On this sample each assignement will trigger a write.
-As the function is decorated with `@api.one` for each record in RecordSet write will be called 3 time
+As the function is decorated with ``@api.one`` for each record in RecordSet write will be called 3 time
 So if you have 10 records in recordset the number of write will be 10*3 = 30.
 
 This may not cause any problems if you are in a simple on change context but on an heavy task you should: ::
@@ -163,7 +180,8 @@ This may not cause any problems if you are in a simple on change context but on 
        #same value on all records
        self.write({'x': 1, 'y': 2, 'z': 4})
 
-Chain of browse null
+
+Chain of Browse_null
 ####################
 
 !!Subject to changes!!
@@ -184,6 +202,8 @@ See drawing:
 
 
 With this adjonction you are not anymore forced to pass the infamous function signature: ::
+
+
     # before
     def afun(self, cr, uid, ids, context=None):
         pass
@@ -204,7 +224,7 @@ Environnement sould be immutable and may not be modified in place as
 it  also store the caches or recordset etc.
 
 
-Modifing environnement
+Modifing Environnement
 ----------------------
 
 If you need to use modifiy your current context you
@@ -219,6 +239,7 @@ Be careful not to modify current RecordSet using this functionnality: ::
 if will modifiy the current records in RecordSet after a rebrowse.
 This will generate an incoherence between caches and RecordSet.
 
+
 Chaning User
 ############
 
@@ -229,7 +250,7 @@ Environement provides an helper to switch user: ::
     # or
     self.env['res.partner'].sudo()
 
-Cleaning environnement caches
+Cleaning Environnement Caches
 -----------------------------
 
 As explained previously An environnement maintain multiple caches
@@ -240,8 +261,9 @@ In this cases you want to invalidate the caches: ::
 
   self.env.invalidate_all()
 
-Commons action
-==============
+
+Commons Actions
+===============
 
 Searching
 ---------
@@ -249,6 +271,7 @@ Serching has not change a lot. Sadly the domain changes
 announced in di not match release 8.0.
 
 You will find main changes below
+
 
 search
 ######
@@ -315,7 +338,7 @@ More info about the subtility of the Active Record Pattern  write function here 
 
 The classical way of writing is still available
 
-From record
+From Record
 ###########
 
 From Record:  ::
@@ -341,8 +364,8 @@ From RecordSet: ::
 It will write on all record set of the relation line_ids
 
 
-M2m one2m behavior.
-####################
+M2m One2m Behavior
+##################
 
 One2many and Many2many fields have some special behavior to be taken in account.
 At that time (This may change at release) using create on a multiple relation fields
@@ -351,8 +374,6 @@ will not introspect to look for relation. ::
   self.line_ids.create({'name': 'Tho'}) #  this will fail as order is not set
   self.line_ids.create({'name': 'Tho', 'order_id': self.id}) #  this will work
   self.line_ids.write({'name': 'Tho'}) #  this will write all related lines
-
-
 
 
 Copy
@@ -381,11 +402,18 @@ From RecordSet: ::
     >>> broken
 
 
+Create
+------
+
+Create has not changed excepting the fact it now returns a recordset: ::
+
+  self.create({'name': 'New name'})
+
 
 Dry run
 --------
-If you use the do_in_draft helper of context manager of Environnement
-No changes will be committed in database only cache will be altered.
+
+You can do action only in caches by using the ``do_in_draft`` helper of Environnement context manager.
 
 
 Using Cursor
@@ -399,20 +427,15 @@ So you can access cursor using: ::
       cursor = self._cr
       # or
       self.env.cr
+
 Then you cau use cursor like in previous API
 
-Using thread
+
+Using Thread
 ============
 When using thread you have to create you own cursor
 and initiate a new environnement for each thread.
-committing is done by committing the cursor.
+committing is done by committing the cursor: ::
 
    with Environment.manage(): #class function
       env = Environnement(cr, uid, context)
-
- Cache
-=======
-
-New cache is now automatically invalidated.
-When you do manual SQL you have to invalidate cache manually: ::
-  invalidate_cache
