@@ -18,5 +18,5 @@ How to  be polite with old code base
 If your code must be used by old API code base,
 It should be decorated by:
 
- * `@api.return` to ensure adapted returned values
- * `@api.model` to ensure that new signature support old api calls
+ * ``@api.returns`` to ensure adapted returned values
+ * ``@api.model`` to ensure that new signature support old api calls
