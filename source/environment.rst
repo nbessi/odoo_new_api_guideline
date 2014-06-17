@@ -275,7 +275,7 @@ Commons Actions
 
 Searching
 ---------
-Serching has not change a lot. Sadly the domain changes
+Searching has not change a lot. Sadly the domain changes
 announced did not match release 8.0.
 
 You will find main changes below
@@ -300,7 +300,7 @@ You can do a search using env: ::
 search_read
 ###########
 
-A search read function is now available. It will do a search
+A ``search_read`` function is now available. It will do a search
 and return list of dict.
 
 Here we retrieve all partners name: ::
@@ -313,7 +313,7 @@ Here we retrieve all partners name: ::
 
 search_count
 ############
-Returns count of result matching search domain: ::
+The ``search_count`` function returns the count of results matching search domain: ::
 
     self.search_count([('is_company', '=', True)])
     >>> 26L
@@ -329,7 +329,7 @@ database. Now browsing will return a RecordSet: ::
 More info about record :ref:`records`
 
 
-writing
+Writing
 -------
 
 Using Active Record pattern
@@ -342,7 +342,7 @@ You can now write using Active Record pattern: ::
       self.x = 1
       self.name = 'a'
 
-More info about the subtility of the Active Record Pattern  write function here :ref:`records`
+More info about the subtility of the Active Record Pattern write pattern here :ref:`records`
 
 The classical way of writing is still available
 
@@ -369,7 +369,7 @@ From RecordSet: ::
     # It will write on all record.
     self.line_ids.write({'key': value })
 
-It will write on all record set of the relation line_ids
+It will write on all Records of the relation line_ids
 
 Many2many One2m Behavior
 ########################
