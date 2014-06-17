@@ -6,7 +6,7 @@ The new version 8.0 of OpenERP/Odoo introduce a new ORM API.
 It intends to add a more coherent and concise syntax and provide a bi-directional compatiblity.
 
 The new API keeps his previous root design as Model and Record but now adds
-new concept like Environnement and Recordset.
+new concepts like Environnement and Recordset.
 
 Some aspects of the previous API will not change with this release, e.g. the domain syntax
 
@@ -16,10 +16,10 @@ Model
 
 A model is a representation of a business Object.
 
-It is bascially a class that have has class property various fields that are stored in Database.
-All functions define in a Model can previously be called directly.
+It is bascially a class that define various class knowhow and fields that are stored in database.
+All functions define in a Model where previously callable directly by the Model.
 
-This paradigm has changes as generaly you should not access Model directly but a RecordSet see :ref:`recordset`
+This paradygm has changed as generaly you should not access Model directly but a RecordSet see :ref:`recordset`
 
 To instanciate a model you must inherit an openerp.model.Model: ::
 
@@ -43,11 +43,11 @@ The inheritance mechanisms have not change you can use: ::
          _inherit = ['a.model, 'a.other.model']' # direct heritage
          _inherits = {'a.model': 'field_name'} # polymorphic heritage
 
-For more detail about inheritance please have a look at
+For more details about inheritance please have a look at
 
   `Inherit <https://www.odoo.com/forum/Help-1/question/The-different-openerp-model-inheritance-mechanisms-whats-the-difference-between-them-and-when-should-they-be-used--46#answer-190>`_
 
-For fields inheritance please :ref:`fields_inherit`
+for fields inheritance please :ref:`fields_inherit`
 
 .. _recordset:
 
@@ -70,24 +70,24 @@ You can call function on recordset: ::
             for record in self:
                print record
 
-In this example the function are define at model level but when executing the code
-the ``self`` varibale is in fact a instance of RecordSet containing many records.
+In this example the function are defined at model level but when executing the code
+the ``self`` variable is in fact an instance of RecordSet containing many Records.
 
-So the self passe in the ``do_something`` is a RecordSet holding a list of records.
+So the self passe in the ``do_something`` is a RecordSet holding a list of Records.
 
 If you decorate a function with ``@api.one`` it will automagically loop
-on the recording and self will this time be a Record.
+on the Records of current RecordSet and self will this time be the current Record.
 
 As described in :ref:`records` you have now access to an pseudo active record pattern
 
-If you use it on a record set it will break if recordset does not contains only one item.
+!!If you use it on a RecordSet it will break if recordset does not contains only one item.!!
 
 
 Supported Opperations
 ---------------------
 
-Record set support set opperation
-you can add, union and intersect recordset: ::
+RecordSet also support set opperations
+you can add, union and intersect, ... recordset: ::
 
     record in recset1 #  include
     record not in recset1 #  not include
@@ -116,7 +116,7 @@ Record
 ------
 
 A Record mirrors a "populated instance of Model Record" fetch from database.
-I propose abstaction over database using caches and query generation: ::
+It proposes abstraction over database using caches and query generation: ::
 
   record = self
   record.name
@@ -128,8 +128,8 @@ I propose abstaction over database using caches and query generation: ::
 Displayed Name of Record
 ########################
 
-With new API the function name_get is deprecated.
-Now it uses the column named display_name.
+With new API the function ``name_get`` is deprecated.
+Now it uses the column named ``display_name``.
 
 This column should be a computed fields with :
 
@@ -142,13 +142,13 @@ This column should be a computed fields with :
 Active Record Pattern
 #####################
 
-One of the new features introduced by the new API is a basic support of active record pattern.
-You can now write to database by setting propertx: ::
+One of the new features introduced by the new API is a basic support of the active record pattern.
+You can now write to database by setting properties: ::
 
   record = self
   record.name = 'new name'
 
-This will update value on the cache and call the write function to  trigger a write action on the Database.
+This will update value on the caches and call the write function to trigger a write action on the Database.
 
 
 Active Record Pattern Be Careful
@@ -168,7 +168,7 @@ On this sample each assignement will trigger a write.
 As the function is decorated with ``@api.one`` for each record in RecordSet write will be called 3 time
 So if you have 10 records in recordset the number of write will be 10*3 = 30.
 
-This may not cause any problems if you are in a simple on change context but on an heavy task you should: ::
+This may not cause some trouble on an heavy task. In that case you should: ::
 
     def better_write(self):
        for rec in self:
@@ -184,12 +184,11 @@ This may not cause any problems if you are in a simple on change context but on 
 Chain of Browse_null
 ####################
 
-!!Subject to changes!!
 
-Empty relation now return Null Value.
+Empty relation now returns an empty RecordSet.
 
 In the new API if you chain a relation with many empty relation.
-Each relation will be chained and a Null should be return at the end.
+Each relation will be chained and an empty RecordSet should be return at the end.
 
 Environment
 ===========
@@ -221,13 +220,13 @@ To acess to environnement you may use: ::
          model.env
 
 Environnement sould be immutable and may not be modified in place as
-it  also store the caches or recordset etc.
+it  also stores the caches of the RecordSet etc.
 
 
 Modifing Environnement
 ----------------------
 
-If you need to use modifiy your current context you
+If you need to modifiy your current context you
 may use the with_context() function. ::
 
   self.env['res.partner'].with_context(tz=x).create(vals)
@@ -236,7 +235,7 @@ Be careful not to modify current RecordSet using this functionnality: ::
 
    self = self.env['res.partner'].with_context(tz=x).browse(self.ids)
 
-if will modifiy the current records in RecordSet after a rebrowse.
+it will modifiy the current Records in RecordSet after a rebrowse.
 This will generate an incoherence between caches and RecordSet.
 
 
@@ -250,13 +249,21 @@ Environement provides an helper to switch user: ::
     # or
     self.env['res.partner'].sudo().create(vlas)
 
+Accessing Current User
+######################
+
+::
+
+    self.env.user
+    
+    
 Cleaning Environnement Caches
 -----------------------------
 
-As explained previously An environnement maintain multiple caches
-That are triggered by the Moded/Fields classes.
+As explained previously an Environnement maintains multiple caches
+that are used by the Moded/Fields classes.
 
-Sometime you will have to do insert/write using your the cursor.
+Sometimes you will have to do insert/write using the cursor directly.
 In this cases you want to invalidate the caches: ::
 
   self.env.invalidate_all()
