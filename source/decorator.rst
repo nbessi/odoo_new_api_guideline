@@ -2,35 +2,35 @@ Method and decorator
 ====================
 
 New decorators are just mapper around the new API.
-The decorator are mandatory as webclient and HTTP controller are not new API aware.
+The decorator are mandatory as webclient and HTTP controller are not compliant with new API.
 
 ``api`` namspace decorators will detect signature using variable name
 and decide to match old signature or not.
 
 Recognized variable names are:
 
-`cr, cursor, uid, user, user_id, id, ids, context`
+``cr, cursor, uid, user, user_id, id, ids, context``
 
 
 @api.returns
 ------------
 
 This decorator guaranties unity of returned value.
-It will returns a record set of sepcified model basef on original returned value: ::
+It will returns a record set of sepcified model based on original returned value: ::
 
     @api.returns('res.partner')
     def afun(self):
         ...
         return x # can be id, list of ids, recordset or void
 
-And if an old api function call a new api function it will
+And if an old API function calls a new API function it will
 automatically convert it into a list of ids
 
 @api.one
 --------
 
 This decorator loop automatically on Records of RecordSet for you.
-So by doing this self is redefined  as current record: ::
+Self is redefined as current record: ::
 
   @api.one
   def afun(self):
@@ -40,8 +40,8 @@ So by doing this self is redefined  as current record: ::
 @api.multi
 ----------
 
-Self will be the record set without iteration.
-it is the default behavior: ::
+Self will be the current RecordSet without iteration.
+It is the default behavior: ::
 
    @api.multi
    def afun(self):
@@ -50,7 +50,7 @@ it is the default behavior: ::
 @api.model
 ----------
 
-This decorator will convert old api call to decorated function to new api signature.
+This decorator will convert old API calls to decorated function to new API signature.
 It allows to be polite when when migrating code. ::
 
     @api.model
@@ -61,7 +61,7 @@ It allows to be polite when when migrating code. ::
 ----------------
 
 This decorator will ensure that decorated function will be called on create, write, unlink operation.
-If a constraint is met the function should raise an `exceptions.Warning` with apropriate message.
+If a constraint is met the function should raise an `exceptions.Warning` with appropriate message.
 
 @api.depends
 ------------
@@ -79,7 +79,8 @@ So it looses some of his interest.
 
 View management
 ###############
-One of the greate improvement of the new API is that the depends are automatically inserted into the form for you in a simple way. You do not have to worry about modifing views anymore.
+One of the greate improvement of the new API is that the depends are automatically inserted into the form for you in a simple way. 
+You do not have to worry about modifing views anymore.
 
 
 
@@ -96,14 +97,16 @@ fields specified in the decorator is changed in the form: ::
 
 In previous sample `self` corresponds to the record currently edited on the form.
 When in on change context all work is done in the cache.
-So you can alter RecordSet inside your function without worried about alter database.
+So you can alter RecordSet inside your function without worried about altering database.
+That the main difference with ``@api.depends``
 
-At function return, difference between the cache and the RecordSet will be returned
+At function return, differences between the cache and the RecordSet will be returned
 to the form.
 
 View management
 ###############
-One of the greate improvement of the new API is that the onchange are automatically inserted into the form for you in a simple way. You do not have to worry about modifing views anymore.
+One of the greate improvement of the new API is that the onchange are automatically inserted into the form for you in a simple way. 
+You do not have to worry about modifing views anymore.
 
 Warning and Domain
 ##################
