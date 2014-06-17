@@ -248,7 +248,7 @@ Environement provides an helper to switch user: ::
     self.sudo(user.id)
     self.sudo() # This will use the SUPERUSER_ID by default
     # or
-    self.env['res.partner'].sudo()
+    self.env['res.partner'].sudo().create(vlas)
 
 Cleaning Environnement Caches
 -----------------------------
