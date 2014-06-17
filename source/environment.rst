@@ -3,12 +3,12 @@ Record/Recordset and Model
 
 The new version 8.0 of OpenERP/Odoo introduce a new ORM API.
 
-It intends to add a more coherent and concise syntax and provide a bi-directional compatiblity.
+It intends to add a more coherent and concise syntax and provide a bi-directional compatibility.
 
-The new API keeps his previous root design as Model and Record but now adds
-new concepts like Environnement and Recordset.
+The new API keeps its previous root design as Model and Record but now adds
+new concepts like Environment and Recordset.
 
-Some aspects of the previous API will not change with this release, e.g. the domain syntax
+Some aspects of the previous API will not change with this release, e.g. the domain syntax.
 
 
 Model
@@ -16,19 +16,19 @@ Model
 
 A model is a representation of a business Object.
 
-It is bascially a class that define various class knowhow and fields that are stored in database.
-All functions define in a Model where previously callable directly by the Model.
+It is basically a class that define various class know-how and fields that are stored in database.
+All functions defined in a Model where previously callable directly by the Model.
 
-This paradygm has changed as generaly you should not access Model directly but a RecordSet see :ref:`recordset`
+This paradigm has changed as generally you should not access Model directly but a RecordSet see :ref:`recordset`
 
-To instanciate a model you must inherit an openerp.model.Model: ::
+To instantiate a model you must inherit an openerp.model.Model: ::
 
     from openerp import models, fields, api, _
 
 
     class MyModel(models.Model):
 
-        _name = 'a.model' #  Model identifer used for table name
+        _name = 'a.model'  # Model identifer used for table name
 
         firstname = fields.Char(string="Firstname")
 
@@ -36,26 +36,26 @@ To instanciate a model you must inherit an openerp.model.Model: ::
 Inheritance
 ###########
 
-The inheritance mechanisms have not change you can use: ::
+The inheritance mechanism has not changed. You can use: ::
 
     class MyModelExtended(Model):
-         _inherit = 'a.model' # direct heritage
-         _inherit = ['a.model, 'a.other.model']' # direct heritage
-         _inherits = {'a.model': 'field_name'} # polymorphic heritage
+         _inherit = 'a.model'                       # direct heritage
+         _inherit = ['a.model, 'a.other.model']'    # direct heritage
+         _inherits = {'a.model': 'field_name'}      # polymorphic heritage
 
 For more details about inheritance please have a look at
 
   `Inherit <https://www.odoo.com/forum/Help-1/question/The-different-openerp-model-inheritance-mechanisms-whats-the-difference-between-them-and-when-should-they-be-used--46#answer-190>`_
 
-for fields inheritance please :ref:`fields_inherit`
+for fields inheritance please read :ref:`fields_inherit`
 
 .. _recordset:
 
 Recordset
 ---------
 
-All instances of Model are at the same time an instance of a RecordSet.
-A Recorset represents a sorted set of record of the same Model of the RecordSet.
+All instances of Model are at the same time instances of a RecordSet.
+A Recorset represents a sorted set of records of the same Model as the RecordSet.
 
 You can call function on recordset: ::
 
@@ -70,32 +70,33 @@ You can call function on recordset: ::
             for record in self:
                print record
 
-In this example the function are defined at model level but when executing the code
+In this example the functions are defined at model level but when executing the code
 the ``self`` variable is in fact an instance of RecordSet containing many Records.
 
-So the self passe in the ``do_something`` is a RecordSet holding a list of Records.
+So the self passed in the ``do_something`` is a RecordSet holding a list of Records.
 
 If you decorate a function with ``@api.one`` it will automagically loop
 on the Records of current RecordSet and self will this time be the current Record.
 
-As described in :ref:`records` you have now access to an pseudo active record pattern
+As described in :ref:`records` you have now access to a pseudo Active-Record pattern
 
-!!If you use it on a RecordSet it will break if recordset does not contains only one item.!!
+.. note::
+   If you use it on a RecordSet it will break if recordset does not contains only one item.!!
 
 
-Supported Opperations
----------------------
+Supported Operations
+--------------------
 
-RecordSet also support set opperations
+RecordSet also support set operations
 you can add, union and intersect, ... recordset: ::
 
-    record in recset1 #  include
-    record not in recset1 #  not include
-    recset1 + recset2 #  sum
-    recset1 | recset2 #  union
-    recset1 & recset2 #  intersect
-    recset1 - recset2 #  difference
-    recset.copy() # to copy recordset (not a deep copy)
+    record in recset1       # include
+    record not in recset1   # not include
+    recset1 + recset2       # extend
+    recset1 | recset2       # union
+    recset1 & recset2       # intersect
+    recset1 - recset2       # difference
+    recset.copy()           # to copy recordset (not a deep copy)
 
 Only the ``+``  operator preserves order
 
@@ -115,14 +116,14 @@ It will be return even if there is more than one Record in RecordSet
 Record
 ------
 
-A Record mirrors a "populated instance of Model Record" fetch from database.
+A Record mirrors a "populated instance of Model Record" fetched from database.
 It proposes abstraction over database using caches and query generation: ::
 
-  record = self
-  record.name
-  >>> toto
-  record.partner_id.name
-  >>> partner name
+  >>> record = self
+  >>> record.name
+  toto
+  >>> record.partner_id.name
+  partner name
 
 
 Displayed Name of Record
@@ -131,7 +132,7 @@ Displayed Name of Record
 With new API the function ``name_get`` is deprecated.
 Now it uses the column named ``display_name``.
 
-This column should be a computed fields with :
+This column should be a computed field with :
 
   * compute
   * inverse
@@ -155,7 +156,7 @@ Active Record Pattern Be Careful
 ################################
 
 Writing value using Active Record pattern must be done carefully.
-As each assignement will trigger a write action on database: ::
+As each assignement will trigger a write action on the database: ::
 
 
     @api.one
@@ -165,10 +166,10 @@ As each assignement will trigger a write action on database: ::
       self.z = 4
 
 On this sample each assignement will trigger a write.
-As the function is decorated with ``@api.one`` for each record in RecordSet write will be called 3 time
-So if you have 10 records in recordset the number of write will be 10*3 = 30.
+As the function is decorated with ``@api.one`` for each record in RecordSet write will be called 3 times.
+So if you have 10 records in recordset the number of writes will be 10*3 = 30.
 
-This may not cause some trouble on an heavy task. In that case you should: ::
+This may cause some trouble on an heavy task. In that case you should do: ::
 
     def better_write(self):
        for rec in self:
@@ -177,7 +178,7 @@ This may not cause some trouble on an heavy task. In that case you should: ::
     # or
 
     def better_write2(self):
-       #same value on all records
+       # same value on all records
        self.write({'x': 1, 'y': 2, 'z': 4})
 
 
@@ -187,7 +188,7 @@ Chain of Browse_null
 
 Empty relation now returns an empty RecordSet.
 
-In the new API if you chain a relation with many empty relations.
+In the new API if you chain a relation with many empty relations,
 each relation will be chained and an empty RecordSet should be return at the end.
 
 
@@ -195,7 +196,7 @@ Environment
 ===========
 
 In the new API the notion of Environment is introduced.
-His main objective is to provide an encapsulation around
+Its main objective is to provide an encapsulation around
 cursor, user_id, model, and context, Recordset and caches
 
 .. image:: Diagram1.png
@@ -213,7 +214,7 @@ With this adjonction you are not anymore forced to pass the infamous function si
         pass
 
 
-To acess to environnement you may use: ::
+To access the environment you may use: ::
 
     def afun(self):
          self.env
@@ -221,18 +222,18 @@ To acess to environnement you may use: ::
          model.env
 
 Environnement sould be immutable and may not be modified in place as
-it  also stores the caches of the RecordSet etc.
+it also stores the caches of the RecordSet etc.
 
 
-Modifing Environnement
-----------------------
+Modifing Environment
+--------------------
 
 If you need to modifiy your current context you
 may use the with_context() function. ::
 
   self.env['res.partner'].with_context(tz=x).create(vals)
 
-Be careful not to modify current RecordSet using this functionnality: ::
+Be careful not to modify current RecordSet using this functionality: ::
 
    self = self.env['res.partner'].with_context(tz=x).browse(self.ids)
 
@@ -240,15 +241,15 @@ Be careful not to modify current RecordSet using this functionnality: ::
 It will modifiy the current Records in RecordSet after a rebrowse and will generate an incoherence between caches and RecordSet.
 
 
-Chaning User
+Changing User
 ############
 
-Environement provides an helper to switch user: ::
+Environment provides an helper to switch user: ::
 
     self.sudo(user.id)
-    self.sudo() # This will use the SUPERUSER_ID by default
+    self.sudo()   # This will use the SUPERUSER_ID by default
     # or
-    self.env['res.partner'].sudo().create(vlas)
+    self.env['res.partner'].sudo().create(vals)
 
 Accessing Current User
 ######################
@@ -258,10 +259,10 @@ Accessing Current User
     self.env.user
 
 
-Cleaning Environnement Caches
------------------------------
+Cleaning Environment Caches
+---------------------------
 
-As explained previously an Environnement maintains multiple caches
+As explained previously an Environment maintains multiple caches
 that are used by the Moded/Fields classes.
 
 Sometimes you will have to do insert/write using the cursor directly.
@@ -270,61 +271,61 @@ In this cases you want to invalidate the caches: ::
   self.env.invalidate_all()
 
 
-Commons Actions
-===============
+Common Actions
+==============
 
 Searching
 ---------
-Searching has not change a lot. Sadly the domain changes
-announced did not match release 8.0.
+Searching has not changed a lot. Sadly the domain changes
+announced did not meet release 8.0.
 
-You will find main changes below
+You will find main changes below.
 
 
 search
 ######
 
-Now seach function return directly a RecordSet: ::
+Now seach function returns directly a RecordSet: ::
 
-    self.search([('is_company', '=', True)])
-    >>> res.partner(7, 6, 18, 12, 14, 17, 19, 8,...)
-    self.search([('is_company', '=', True)])[0].name
-    >>> 'Camptocamp'
+    >>> self.search([('is_company', '=', True)])
+    res.partner(7, 6, 18, 12, 14, 17, 19, 8,...)
+    >>> self.search([('is_company', '=', True)])[0].name
+    'Camptocamp'
 
 You can do a search using env: ::
 
-    self.env['res.users'].search([('login', '=', 'admin')])
-    >>> res.users(1,)
+    >>> self.env['res.users'].search([('login', '=', 'admin')])
+    res.users(1,)
 
 
 search_read
 ###########
 
 A ``search_read`` function is now available. It will do a search
-and return list of dict.
+and return a list of dict.
 
 Here we retrieve all partners name: ::
 
-    self.search_read([], ['name'])
-    >>> [{'id': 3, 'name': u'Administrator'},
-        {'id': 7, 'name': u'Agrolait'},
-        {'id': 43, 'name': u'Michel Fletcher'},
-        ...]
+    >>> self.search_read([], ['name'])
+    [{'id': 3, 'name': u'Administrator'},
+     {'id': 7, 'name': u'Agrolait'},
+     {'id': 43, 'name': u'Michel Fletcher'},
+     ...]
 
 search_count
 ############
 The ``search_count`` function returns the count of results matching search domain: ::
 
-    self.search_count([('is_company', '=', True)])
-    >>> 26L
+    >>> self.search_count([('is_company', '=', True)])
+    26L
 
 Browsing
 --------
-Browsing consist of the strandard way to obtain Records from the
+Browsing is the standard way to obtain Records from the
 database. Now browsing will return a RecordSet: ::
 
-    self.browse([1, 2, 3])
-    >>> res.partner(1, 2, 3)
+    >>> self.browse([1, 2, 3])
+    res.partner(1, 2, 3)
 
 More info about record :ref:`records`
 
@@ -342,9 +343,9 @@ You can now write using Active Record pattern: ::
       self.x = 1
       self.name = 'a'
 
-More info about the subtility of the Active Record Pattern write pattern here :ref:`records`
+More info about the subtility of the Active Record write pattern here :ref:`records`
 
-The classical way of writing is still available
+The classical way of writing is still available.
 
 From Record
 ###########
@@ -371,31 +372,33 @@ From RecordSet: ::
 
 It will write on all Records of the relation line_ids
 
-Many2many One2m Behavior
-########################
+Many2many One2many Behavior
+###########################
 
 One2many and Many2many fields have some special behavior to be taken in account.
-At that time (This may change at release) using create on a multiple relation fields
-will not introspect to look for relation. ::
+At that time (this may change at release) using create on a multiple relation fields
+will not introspect to look for the relation. ::
 
-  self.line_ids.create({'name': 'Tho'}) #  this will fail as order is not set
-  self.line_ids.create({'name': 'Tho', 'order_id': self.id}) #  this will work
-  self.line_ids.write({'name': 'Tho'}) #  this will write all related lines
+  self.line_ids.create({'name': 'Tho'})   # this will fail as order is not set
+  self.line_ids.create({'name': 'Tho', 'order_id': self.id})  # this will work
+  self.line_ids.write({'name': 'Tho'})    # this will write all related lines
 
 
 Copy
 ----
-!!! Subjet to changes still buggy !!!
+
+.. note::
+   Subject to change, still buggy !!!
 
 From Record
 ###########
 
 From Record: ::
 
-    @api.one
-    ...
-    self.copy()
-    >>> broken
+    >>> @api.one
+    >>> ...
+    >>>     self.copy()
+    broken
 
 
 From RecordSet
@@ -403,16 +406,16 @@ From RecordSet
 
 From RecordSet: ::
 
-    @api.multi
-    ...
-    self.copy()
-    >>> broken
+    >>> @api.multi
+    >>> ...
+    >>>     self.copy()
+    broken
 
 
 Create
 ------
 
-Create has not changed excepting the fact it now returns a recordset: ::
+Create has not changed, except the fact it now returns a recordset: ::
 
   self.create({'name': 'New name'})
 
@@ -420,7 +423,7 @@ Create has not changed excepting the fact it now returns a recordset: ::
 Dry run
 --------
 
-You can do action only in caches by using the ``do_in_draft`` helper of Environnement context manager.
+You can do action only in caches by using the ``do_in_draft`` helper of Environment context manager.
 
 
 Using Cursor
@@ -435,14 +438,14 @@ So you can access cursor using: ::
       # or
       self.env.cr
 
-Then you cau use cursor like in previous API
+Then you can use cursor like in previous API
 
 
 Using Thread
 ============
 When using thread you have to create you own cursor
-and initiate a new environnement for each thread.
+and initiate a new environment for each thread.
 committing is done by committing the cursor: ::
 
-   with Environment.manage(): #class function
-      env = Environnement(cr, uid, context)
+   with Environment.manage():  # class function
+       env = Environment(cr, uid, context)

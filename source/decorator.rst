@@ -4,7 +4,7 @@ Method and decorator
 New decorators are just mapper around the new API.
 The decorator are mandatory as webclient and HTTP controller are not compliant with new API.
 
-``api`` namspace decorators will detect signature using variable name
+``api`` namespace decorators will detect signature using variable name
 and decide to match old signature or not.
 
 Recognized variable names are:
@@ -16,12 +16,12 @@ Recognized variable names are:
 ------------
 
 This decorator guaranties unity of returned value.
-It will returns a record set of sepcified model based on original returned value: ::
+It will return a RecordSet of specified model based on original returned value: ::
 
     @api.returns('res.partner')
     def afun(self):
         ...
-        return x # can be id, list of ids, recordset or void
+        return x  # can be id, list of ids, RecordSet or void
 
 And if an old API function calls a new API function it will
 automatically convert it into a list of ids
@@ -29,7 +29,7 @@ automatically convert it into a list of ids
 @api.one
 --------
 
-This decorator loop automatically on Records of RecordSet for you.
+This decorator loops automatically on Records of RecordSet for you.
 Self is redefined as current record: ::
 
   @api.one
@@ -51,7 +51,7 @@ It is the default behavior: ::
 ----------
 
 This decorator will convert old API calls to decorated function to new API signature.
-It allows to be polite when when migrating code. ::
+It allows to be polite when migrating code. ::
 
     @api.model
     def afun(self):
@@ -61,7 +61,7 @@ It allows to be polite when when migrating code. ::
 ----------------
 
 This decorator will ensure that decorated function will be called on create, write, unlink operation.
-If a constraint is met the function should raise an `exceptions.Warning` with appropriate message.
+If a constraint is met the function should raise a `openerp.exceptions.Warning` with appropriate message.
 
 @api.depends
 ------------
@@ -69,18 +69,19 @@ If a constraint is met the function should raise an `exceptions.Warning` with ap
 This decorator will trigger the call to the decorated function if any of the
 fields specified in the decorator is altered by ORM or changed in the form: ::
 
-    @pid.depends('name', 'an_other_field')
+    @api.depends('name', 'an_other_field')
     def afun(self):
         pass
 
 
-!! when you redefine depends you have te redefine all @api.depends
-So it looses some of his interest.
+.. note::
+   when you redefine depends you have to redefine all @api.depends,
+   so it loses some of his interest.
 
 View management
 ###############
-One of the greate improvement of the new API is that the depends are automatically inserted into the form for you in a simple way. 
-You do not have to worry about modifing views anymore.
+One of the great improvement of the new API is that the depends are automatically inserted into the form for you in a simple way.
+You do not have to worry about modifying views anymore.
 
 
 
@@ -89,25 +90,25 @@ You do not have to worry about modifing views anymore.
 This decorator will trigger the call to the decorated function if any of the
 fields specified in the decorator is changed in the form: ::
 
-  @api.one       
+  @api.one
   @api.on_change('fieldx'):
   def do_stuff(self):
-     if self.fieldx == x
+     if self.fieldx == x:
         self.fieldy = 'toto'
 
 In previous sample `self` corresponds to the record currently edited on the form.
-When in on change context all work is done in the cache.
-So you can alter RecordSet inside your function without worried about altering database.
-That the main difference with ``@api.depends``
+When in on_change context all work is done in the cache.
+So you can alter RecordSet inside your function without being worried about altering database.
+That's the main difference with ``@api.depends``
 
 At function return, differences between the cache and the RecordSet will be returned
 to the form.
 
 View management
 ###############
-One of the greate improvement of the new API is that the onchange are automatically inserted into the form for you in a simple way. 
-You do not have to worry about modifing views anymore.
+One of the great improvement of the new API is that the onchange are automatically inserted into the form for you in a simple way.
+You do not have to worry about modifying views anymore.
 
 Warning and Domain
 ##################
-To change domain or send a warning just return the usual dictionnary.
+To change domain or send a warning just return the usual dictionary.

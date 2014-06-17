@@ -4,24 +4,26 @@ Conventions
 Snake_casing or CamelCasing
 ---------------------------
 That was not clear.
-But it seems that OpenERP SA will continue to use snake case
+But it seems that OpenERP SA will continue to use snake case.
 
 Imports
 -------
-Has disscussed with Raphael Collet
+As discussed with Raphaël Collet.
 This convention should be the one to use after RC1.
 
 Model
 #####
 
-:: 
+::
 
   from openerp import models
 
 Fields
 ######
 
-from openerp import fields
+::
+
+  from openerp import fields
 
 Translation
 ###########
@@ -39,7 +41,10 @@ API
 
 Exceptions
 ##########
-from openerp import exceptions
+
+::
+
+  from openerp import exceptions
 
 A typical module import would be: ::
   
@@ -58,6 +63,10 @@ New Exceptions classes
 ``except_orm`` exception is deprecated.
 We should use ``openerp.exceptions.Warning`` and subclasses instances
 
+.. note::
+  Do not mix with built-in Python Warning.
+
+
 RedirectWarning
 ###############
 
@@ -65,14 +74,15 @@ Warning with a possibility to redirect the user instead of simply
 diplaying the warning message.
 
 Should receive as parameters:
-:param int action_id: id of the action where to perform the redirection
-:param string button_text: text to put on the button that will trigger
+
+* :param int action_id: id of the action where to perform the redirection
+* :param string button_text: text to put on the button that will trigger
 the redirection.
 
 AccessDenied
 ############
 
-Login/password error. No message, no traceback
+Login/password error. No message, no traceback.
 
 AccessError
 ###########
@@ -91,20 +101,21 @@ Exception object holding a traceback for asynchronous reporting.
 
 Some RPC calls (database creation and report generation) happen with
 an initial request followed by multiple, polling requests. This class
-is used to store the possible exception occuring in the thread serving
+is used to store the possible exception occurring in the thread serving
 the first request, and is then sent to a polling request.
 
-('Traceback' is misleading, this is really a exc_info() triple.)
+.. note::
+   Traceback is misleading, this is really a ``sys.exc_info()`` triplet.
 
 
 Compatibility
 #############
 
-When catching orm exception we should catch both type of exceptions: ::
+When catching orm exception we should catch both types of exceptions: ::
 
     try:
         pass
-    except(Waring, except_orm) as exc:
+    except (Warning, except_orm) as exc:
         pass
 
 
@@ -112,14 +123,14 @@ Fields
 ------
 
 Fields should be declared using new fields API.
-Putting string key is better than using  a long property name: ::
+Putting string key is better than using a long property name: ::
 
     class AClass(models.Model):
 
-        name = fields.Char(string="This is a really long long name") # ok
+        name = fields.Char(string="This is a really long long name")  # ok
         really_long_long_long_name = fields.char()
 
-That said the property name must be meaningfull. Avoid name like 'nb' etc.
+That said the property name must be meaningful. Avoid name like 'nb' etc.
 
 
 Default or compute
@@ -128,32 +139,32 @@ Default or compute
 ``compute`` option should not be used as a workaround to set default.
 Defaut should only be used to provide property initialisation.
 
-That said they may share same function
+That said they may share the same function.
 
 Modifing self in method
 -----------------------
 
 We should never alter self in a Model function.
-It will break the correlation with current Environement caches.
+It will break the correlation with current Environment caches.
 
 
 Doing thing in dry run
 ----------------------
 
-If you use the do_in_draft context manager of Environnement
+If you use the do_in_draft context manager of Environment
 it will not be committed but only be done in cache.
 
 
 Using Cursor
 ------------
 
-When using cursor you should use current environnement cursor: ::
+When using cursor you should use current environment cursor: ::
 
       self.env.cr
 
 except if you need to use threads: ::
 
-    with Environment.manage(): #class function
+    with Environment.manage():  # class function
         env = Environnement(cr, uid, context)
 
 Displayed Name
@@ -169,6 +180,7 @@ You should define the display_name field with options:
 
 Constraints
 -----------
+
 Should be done using ``@api.constraints`` decorator in
 conjunction with the ``@api.one`` if performance allows it.
 
@@ -183,7 +195,7 @@ standard view (non Qweb) should be the preferred choice.
 Javascript and Website related code
 -----------------------------------
 
-General guideline should be found:
+General guidelines should be found:
 
  * https://doc.openerp.com/trunk/web/guidelines/
  * https://doc.openerp.com/trunk/server/howto/howto_website/
