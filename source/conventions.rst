@@ -125,7 +125,7 @@ That said the property name must be meaningfull. Avoid name like 'nb' etc.
 Default or compute
 ------------------
 
-Compute option should not be used as a workaround to set default.
+``compute`` option should not be used as a workaround to set default.
 Defaut should only be used to provide property initialisation.
 
 That said they may share same function
@@ -134,14 +134,14 @@ Modifing self in method
 -----------------------
 
 We should never alter self in a Model function.
-It will break the correlation with current environement caches.
+It will break the correlation with current Environement caches.
 
 
 Doing thing in dry run
 ----------------------
 
-if you use the do_in_draft contenxt manager of Environnement
-It will not be committed but only be done in cache.
+If you use the do_in_draft context manager of Environnement
+it will not be committed but only be done in cache.
 
 
 Using Cursor
@@ -163,12 +163,12 @@ Displayed Name
 
 You should define the display_name field with options:
 
- * compute
- * inverse
+ * ``compute``
+ * ``inverse``
 
 
-Constraint
-----------
+Constraints
+-----------
 Should be done using ``@api.constraints`` decorator in
 conjunction with the ``@api.one`` if performance allows it.
 
