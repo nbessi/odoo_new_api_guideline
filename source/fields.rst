@@ -1,8 +1,7 @@
 Fields
 ======
 
-Now fields are class property.
-It uses Python property under the hoods: ::
+Now fields are class property: ::
 
     from openerp import models, fields
 
@@ -24,7 +23,7 @@ It uses Python property under the hoods: ::
         company_dependent=True,          #  Transform columns to ir.property
     )
 
-   # the string key is not mandatory
+   # The string key is not mandatory
    # by default it wil use the property name Capitalized
 
   name = fields.Char()  #  Valid definition
@@ -37,7 +36,7 @@ Fields inheritance
 
 One of the new feature of the API is to be able to change only an attribute of the fields: ::
 
-   name = fields.Char(string)
+   name = fields.Char(string='New Value')
 
 Fields types
 ------------
@@ -59,21 +58,45 @@ Store string with variable len.: ::
 
 Specific options:
 
- * size: data will be trimmed to sepcified size
+ * size: data will be trimmed to specified size
+ * translate: fields can be translated
+
+Text
+####
+
+Used to store long text.: ::
+
+    atext = fields.Text()
+
+
+Specific options:
+
+ * translate: fields can be translated
+
+HTML
+####
+
+Used to store HTML provied an HTML widget.: ::
+
+    anhtml = fields.HTML()
+
+
+Specific options:
+
  * translate: fields can be translated
 
 
 Integer
 #######
 
-Store integer value. No null value support. If value not set it returns 0: ::
+Store integer value. No NULL value support. If value is not set it returns 0: ::
 
     anint = fields.Integer()
 
 Float
 #####
 
-Store float value. No null value support. If value not set it returns 0.0
+Store float value. No NULL value support. If value is not set it returns 0.0
 If digits option is set it will use numeric type: ::
 
 
@@ -83,7 +106,7 @@ If digits option is set it will use numeric type: ::
 
 Specific options:
 
-  * digits: force use of numeric type on database. parameter can be a tuple (int len, float len) or a callable that return a tuple and take a cursor as parameter
+  * digits: force use of numeric type on database. Parameter can be a tuple (int len, float len) or a callable that return a tuple and take a cursor as parameter
 
 Date
 ####
@@ -91,10 +114,10 @@ Date
 Store date.
 The field provide some helper:
 
-  * context_today  returns current day date string based on tz
-  * today return current system date string
-  * from_string returns datetime.date() from string
-  * to_string retruns date string from datetime.date
+  * ``context_today``  returns current day date string based on tz
+  * ``today`` return current system date string
+  * ``from_string`` returns datetime.date() from string
+  * ``to_string`` retruns date string from datetime.date
 
 : ::
 
@@ -118,10 +141,10 @@ DateTime
 Store datetime.
 The field provide some helper:
 
-  * context_timestamp  returns current day date string based on tz
-  * now return current system date string
-  * from_string returns datetime.date() from string
-  * to_string retruns date string from datetime.date
+  * ``context_timestamp``  returns current day date string based on tz
+  * ``now`` return current system date string
+  * ``from_string`` returns datetime.date() from string
+  * ``to_string`` retruns date string from datetime.date
 
 : ::
 
@@ -138,7 +161,7 @@ The field provide some helper:
 Binary
 ######
 
-Store file in bytea format: ::
+Store file encoded in base64 in bytea column: ::
 
     abin = fields.Binary()
 
@@ -219,7 +242,7 @@ Specific options:
 
 Name Conflicts
 --------------
-!! fields and method name can conflict.
+!! fields and method name can conflict.!!
 
 When you call an record as a dict it will force to look on the columns.
 
@@ -250,7 +273,7 @@ Computed Fields
 ---------------
 There is no more direct creation of fields.function.
 
-Instead you add a `compute` key. the value is the name of the function as a string.
+Instead you add a ``compute`` kwarg. The value is the name of the function as a string or a function.
 This allows to have fields definition atop of class: ::
 
     class AModel(models.Model):
@@ -275,8 +298,8 @@ You should do classic call to write
 Inverse
 -------
 
-The inverse key allows to trigger call of the function
-When the fields is written/"created"
+The inverse key allows to trigger call of the decorated function
+when the fields is written/"created"
 
 
 Multi Fields
@@ -294,18 +317,18 @@ To have one function that compute multiples values: ::
 Related Field
 -------------
 
-There is not anymore related fields.related type.
+There is not anymore ``fields.related`` fields.
 
 Instead you just set the name argument related to your model: ::
 
   participant_nick = field.Char(string='Nick name',
                                 related='partner_id.name')
 
-The type field named arg is not needed anymore.
+The ``type`` kwarg is not needed anymore.
 
-Setting the store key word will store the value
-and from now the value of the related fields will be autmatically
-updated. sweet. ::
+Setting the ``store`` kwarg will automatically store the value in database.
+With new API the value of the related fields will be autmatically
+updated, sweet. ::
 
   participant_nick = field.Char(string='Nick name',
                                 store=True,
@@ -315,14 +338,14 @@ updated. sweet. ::
 translations of related field are yet translated if field
 is stored!!
 
-Chain related fields modification will trigger invalidation of the cache
+Chained related fields modification will trigger invalidation of the cached
 for all elements of the chain
 
 
 Property Field
 --------------
 
-There is some use cases where value of the fields must change depending of
+There is some use cases where value of the field must change depending of
 the current company.
 
 To activate such behavior you can now use the `company_depending` option.
