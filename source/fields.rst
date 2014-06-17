@@ -68,7 +68,7 @@ Integer
 
 Store integer value. No null value support. If value not set it returns 0: ::
 
-    anint = fields.Interger()
+    anint = fields.Integer()
 
 Float
 #####
@@ -219,7 +219,7 @@ Specific options:
 
 Name Conflicts
 --------------
-!! fields anf method name can conflict.
+!! fields and method name can conflict.
 
 When you call an record as a dict it will force to look on the columns.
 
@@ -282,6 +282,7 @@ When the fields is written/"created"
 Multi Fields
 ------------
 To have one function that compute multiples values: ::
+
     @api.multi
     @api.depends('field.relation', 'an_otherfields.relation' )
     def _amount(self):
@@ -326,7 +327,7 @@ the current company.
 
 To activate such behavior you can now use the `company_depending` option.
 
-A notable evolution in new API is that "property fields" are now serchable
+A notable evolution in new API is that "property fields" are now searchable
 
 WIP copyable option
 -------------------
