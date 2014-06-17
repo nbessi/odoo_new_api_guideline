@@ -327,3 +327,11 @@ the current company.
 To activate such behavior you can now use the `company_depending` option.
 
 A notable evolution in new API is that "property fields" are now serchable
+
+WIP copyable option
+-------------------
+
+There is a dev running that will prevent to redefine copy by simply
+setting an copyable option on fields. It has not yet landed in new API: ::
+
+  copyable=False  # !! WIP to prevent redefine copy

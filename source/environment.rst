@@ -198,7 +198,7 @@ In the new API the notion of Environment is introduced.
 His main objective is to provide an encapsulation around
 cursor, user_id, model, and context, Recordset and caches
 
-See drawing:
+.. image:: Diagram1.png
 
 
 With this adjonction you are not anymore forced to pass the infamous function signature: ::
