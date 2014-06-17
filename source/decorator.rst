@@ -29,7 +29,7 @@ So it looses some of his interest.
 @api.returns
 ------------
 
-This decorator cuaranties unity of returned value.
+This decorator guaranties unity of returned value.
 It will returns a record set of sepcified model basef on original returned value: ::
 
     @api.returns('res.partner')
@@ -54,7 +54,7 @@ So by doing this self is redefined  as current record: ::
 @api.multi
 ----------
 
-Self wil lbe the record set without iteration-
+Self will be the record set without iteration.
 it is the default behavior: ::
 
    @api.multi()
@@ -75,7 +75,7 @@ It allows to be polite when when migrating code. ::
 ----------------
 
 This decorator will ensure that decorated function will be called on create, write, unlink operation.
-If a constraint is met the function should raise an `exceptions.Waring` with apropriate message.
+If a constraint is met the function should raise an `exceptions.Warning` with apropriate message.
 
 @api.on_change
 --------------
