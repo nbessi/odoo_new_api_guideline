@@ -364,8 +364,8 @@ From RecordSet: ::
 It will write on all record set of the relation line_ids
 
 
-M2m One2m Behavior
-##################
+Many2many One2m Behavior
+########################
 
 One2many and Many2many fields have some special behavior to be taken in account.
 At that time (This may change at release) using create on a multiple relation fields
