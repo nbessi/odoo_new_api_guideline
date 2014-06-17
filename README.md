@@ -15,7 +15,7 @@ Overview
    * [Introspection](source/introspection.rst)  
 
 
-Conventions and code update  
+Conventions and Code Update  
 ---------------------------
   
    * [Conventions](source/conventions.rst)
