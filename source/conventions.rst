@@ -161,15 +161,16 @@ Displayed Name
 
 `_name_get` is deprecated.
 
-You should override the display_name fields compute function:
+You should define the display_name field with options:
+
  * compute
  * inverse
 
 
 Constraint
 ----------
-Should be done using `@api.constraints` decorator in
-conjunction with the @api.one if performance allows it.
+Should be done using ``@api.constraints`` decorator in
+conjunction with the ``@api.one`` if performance allows it.
 
 
 Qweb view or not Qweb view
