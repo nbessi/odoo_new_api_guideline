@@ -242,7 +242,7 @@ It will modifiy the current Records in RecordSet after a rebrowse and will gener
 
 
 Changing User
-############
+#############
 
 Environment provides an helper to switch user: ::
 
