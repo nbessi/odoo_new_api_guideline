@@ -4,7 +4,7 @@ Conventions
 Snake_casing or CamelCasing
 ---------------------------
 That was not clear.
-R. Collet wants the example of name collision to choose wich solutionis best
+But it seems that OpenERP SA will continue to use snake case
 
 Imports
 -------
