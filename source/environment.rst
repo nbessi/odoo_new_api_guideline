@@ -236,7 +236,7 @@ Be careful not to modify current RecordSet using this functionnality: ::
 
    self = self.env['res.partner'].with_context(tz=x).browse(self.ids)
 
-if will modifiy the current records in RecordSet after a rebrowse.
+it will modifiy the current records in RecordSet after a rebrowse.
 This will generate an incoherence between caches and RecordSet.
 
 
@@ -268,7 +268,7 @@ Commons Actions
 Searching
 ---------
 Serching has not change a lot. Sadly the domain changes
-announced in di not match release 8.0.
+announced did not match release 8.0.
 
 You will find main changes below
 
@@ -364,7 +364,7 @@ From RecordSet: ::
 It will write on all record set of the relation line_ids
 
 
-M2m One2m Behavior
+Many2many One2many Behavior
 ##################
 
 One2many and Many2many fields have some special behavior to be taken in account.
