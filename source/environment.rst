@@ -248,7 +248,7 @@ Environement provides an helper to switch user: ::
     self.sudo(user.id)
     self.sudo() # This will use the SUPERUSER_ID by default
     # or
-    self.env['res.partner'].sudo()
+    self.env['res.partner'].sudo().create(vlas)
 
 Cleaning Environnement Caches
 -----------------------------
@@ -363,9 +363,8 @@ From RecordSet: ::
 
 It will write on all record set of the relation line_ids
 
-
-Many2many One2many Behavior
-##################
+Many2many One2m Behavior
+########################
 
 One2many and Many2many fields have some special behavior to be taken in account.
 At that time (This may change at release) using create on a multiple relation fields

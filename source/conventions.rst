@@ -4,7 +4,7 @@ Conventions
 Snake_casing or CamelCasing
 ---------------------------
 That was not clear.
-R. Collet wants the example of name collision to choose wich solutionis best
+But it seems that OpenERP SA will continue to use snake case
 
 Imports
 -------
@@ -14,7 +14,9 @@ This convention should be the one to use after RC1.
 Model
 #####
 
-from openerp import models
+:: 
+
+  from openerp import models
 
 Fields
 ######
@@ -23,31 +25,38 @@ from openerp import fields
 
 Translation
 ###########
-from openerp import _
+
+::
+
+  from openerp import _
 
 API
 ###
-from openerp import api
+
+::
+
+  from openerp import api
 
 Exceptions
 ##########
 from openerp import exceptions
 
 A typical module import would be: ::
-  from openerp import Model, fields, api, _
+  
+  from openerp import models, fields, api, _
 
 Classes
 -------
 Class should be initialized like this: ::
 
-class Toto(models.Model):
-   pass
+    class Toto(models.Model):
+       pass
 
 New Exceptions classes
 ----------------------
 
-`except_orm` exception is deprecated.
-We should use `openerp.exceptions.Warning` and subclasses instances
+``except_orm`` exception is deprecated.
+We should use ``openerp.exceptions.Warning`` and subclasses instances
 
 RedirectWarning
 ###############
@@ -152,15 +161,16 @@ Displayed Name
 
 `_name_get` is deprecated.
 
-You should override the display_name fields compute function:
+You should define the display_name field with options:
+
  * compute
  * inverse
 
 
 Constraint
 ----------
-Should be done using `@api.constraints` decorator in
-conjunction with the @api.one if performance allows it.
+Should be done using ``@api.constraints`` decorator in
+conjunction with the ``@api.one`` if performance allows it.
 
 
 Qweb view or not Qweb view
