@@ -11,20 +11,6 @@ Recognized variable names are:
 
 `cr, cursor, uid, user, user_id, id, ids, context`
 
-@api.depends
-------------
-
-This decorator will trigger the call to the decorated function if any of the
-fields specified in the decorator is altered: ::
-
-    @pid.depends('name', 'an_other_field')
-    def afun(self):
-        pass
-
-
-!! when you redefine depends you have te redefine all @api.depends
-So it looses some of his interest.
-
 
 @api.returns
 ------------
@@ -46,7 +32,7 @@ automatically convert it into a list of ids
 This decorator loop automatically on Records of RecordSet for you.
 So by doing this self is redefined  as current record: ::
 
-  @api.one()
+  @api.one
   def afun(self):
       self.name = 'toto'
 
@@ -57,7 +43,7 @@ So by doing this self is redefined  as current record: ::
 Self will be the record set without iteration.
 it is the default behavior: ::
 
-   @api.multi()
+   @api.multi
    def afun(self):
        len(self)
 
@@ -67,7 +53,7 @@ it is the default behavior: ::
 This decorator will convert old api call to decorated function to new api signature.
 It allows to be polite when when migrating code. ::
 
-    @api.model()
+    @api.model
     def afun(self):
         pass
 
@@ -77,10 +63,32 @@ It allows to be polite when when migrating code. ::
 This decorator will ensure that decorated function will be called on create, write, unlink operation.
 If a constraint is met the function should raise an `exceptions.Warning` with apropriate message.
 
+@api.depends
+------------
+
+This decorator will trigger the call to the decorated function if any of the
+fields specified in the decorator is altered by ORM or changed in the form: ::
+
+    @pid.depends('name', 'an_other_field')
+    def afun(self):
+        pass
+
+
+!! when you redefine depends you have te redefine all @api.depends
+So it looses some of his interest.
+
+View management
+###############
+One of the greate improvement of the new API is that the depends are automatically inserted into the form for you in a simple way. You do not have to worry about modifing views anymore.
+
+
+
 @api.on_change
 --------------
-This decorator will set decorated function as an on_change function for fields passed as argument: ::
+This decorator will trigger the call to the decorated function if any of the
+fields specified in the decorator is changed in the form: ::
 
+  @api.one       
   @api.on_change('fieldx'):
   def do_stuff(self):
      if self.fieldx == x
