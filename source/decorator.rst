@@ -46,7 +46,7 @@ automatically convert it into a list of ids
 This decorator loop automatically on Records of RecordSet for you.
 So by doing this self is redefined  as current record: ::
 
-  @api.one()
+  @api.one
   def afun(self):
       self.name = 'toto'
 
@@ -57,7 +57,7 @@ So by doing this self is redefined  as current record: ::
 Self wil lbe the record set without iteration-
 it is the default behavior: ::
 
-   @api.multi()
+   @api.multi
    def afun(self):
        len(self)
 
@@ -67,7 +67,7 @@ it is the default behavior: ::
 This decorator will convert old api call to decorated function to new api signature.
 It allows to be polite when when migrating code. ::
 
-    @api.model()
+    @api.model
     def afun(self):
         pass
 
