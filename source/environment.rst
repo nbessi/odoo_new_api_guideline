@@ -187,8 +187,9 @@ Chain of Browse_null
 
 Empty relation now returns an empty RecordSet.
 
-In the new API if you chain a relation with many empty relation.
-Each relation will be chained and an empty RecordSet should be return at the end.
+In the new API if you chain a relation with many empty relations.
+each relation will be chained and an empty RecordSet should be return at the end.
+
 
 Environment
 ===========
