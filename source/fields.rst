@@ -34,7 +34,7 @@ Now fields are class property: ::
 Field inheritance
 ------------------
 
-One of the new features of the API is too be able to change only one attribute of the field: ::
+One of the new features of the API is to be able to change only one attribute of the field: ::
 
    name = fields.Char(string='New Value')
 
@@ -290,6 +290,7 @@ This allows to have fields definition atop of class: ::
 
 The function can be void.
 It should modify record property in order to be written to the cache: ::
+
   self.name = new_value
 
 Be aware that this assignation will trigger a write into the database.
