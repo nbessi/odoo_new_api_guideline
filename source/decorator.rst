@@ -85,7 +85,7 @@ You do not have to worry about modifying views anymore.
 
 
 
-@api.on_change
+@api.onchange
 --------------
 This decorator will trigger the call to the decorated function if any of the
 fields specified in the decorator is changed in the form: ::
