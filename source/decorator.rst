@@ -91,7 +91,7 @@ This decorator will trigger the call to the decorated function if any of the
 fields specified in the decorator is changed in the form: ::
 
   @api.one
-  @api.on_change('fieldx'):
+  @api.onchange('fieldx'):
   def do_stuff(self):
      if self.fieldx == x:
         self.fieldy = 'toto'
