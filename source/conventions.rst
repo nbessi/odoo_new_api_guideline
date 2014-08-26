@@ -56,6 +56,11 @@ Class should be initialized like this: ::
 
     class Toto(models.Model):
        pass
+    
+    
+    class Titi(models.TransientModel):
+       pass
+
 
 New Exceptions classes
 ----------------------
