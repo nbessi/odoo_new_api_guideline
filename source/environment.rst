@@ -129,13 +129,16 @@ It proposes abstraction over database using caches and query generation: ::
 Displayed Name of Record
 ########################
 
-With new API the function ``name_get`` is deprecated.
-Now it uses the column named ``display_name``.
+With new API a notion of display name is introduced.
+It uses the function ``name_get`` under the hood.
 
-This column should be a computed field with :
 
-  * compute
-  * inverse
+So if you want to override the display name you should override the ``display_name`` field.
+`Example <https://github.com/odoo/odoo/blob/8.0/openerp/addons/base/res/res_partner.py#L232>`_
+
+
+If you want to override both display name and computed relation name you should override ``name_get``.
+`Example <https://github.com/odoo/odoo/blob/8.0/addons/event/event.py#L194>`_
 
 
 .. _ac_pattern:
