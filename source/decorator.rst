@@ -37,6 +37,12 @@ Self is redefined as current record: ::
       self.name = 'toto'
 
 
+Caution: the returned value is put in a list. This is not always supported by
+the web client, e.g. on button action methods. In that case, you should use
+``@api.multi`` to decorate your method, and probably call `self.ensure_one()`
+in the method definition.
+
+
 @api.multi
 ----------
 
@@ -90,7 +96,6 @@ You do not have to worry about modifying views anymore.
 This decorator will trigger the call to the decorated function if any of the
 fields specified in the decorator is changed in the form: ::
 
-  @api.one
   @api.onchange('fieldx'):
   def do_stuff(self):
      if self.fieldx == x:
@@ -112,3 +117,5 @@ You do not have to worry about modifying views anymore.
 Warning and Domain
 ##################
 To change domain or send a warning just return the usual dictionary.
+Be careful not to use ``@api.one`` in that case as it will mangle the
+dictionary (put it in a list, which is not supported by the web client).
