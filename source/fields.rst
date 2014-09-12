@@ -325,7 +325,7 @@ There is not anymore ``fields.related`` fields.
 Instead you just set the name argument related to your model: ::
 
   participant_nick = fields.Char(string='Nick name',
-                                related='partner_id.name')
+                                 related='partner_id.name')
 
 The ``type`` kwarg is not needed anymore.
 
@@ -334,8 +334,8 @@ With new API the value of the related field will be automatically
 updated, sweet. ::
 
   participant_nick = fields.Char(string='Nick name',
-                                store=True,
-                                related='partner_id.name')
+                                 store=True,
+                                 related='partner_id.name')
 
 .. note::
    When updating any related field not all
