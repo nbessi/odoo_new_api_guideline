@@ -40,7 +40,7 @@ The inheritance mechanism has not changed. You can use: ::
 
     class MyModelExtended(Model):
          _inherit = 'a.model'                       # direct heritage
-         _inherit = ['a.model, 'a.other.model']'    # direct heritage
+         _inherit = ['a.model, 'a.other.model']     # direct heritage
          _inherits = {'a.model': 'field_name'}      # polymorphic heritage
 
 For more details about inheritance please have a look at
