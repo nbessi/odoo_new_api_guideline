@@ -37,10 +37,11 @@ Self is redefined as current record: ::
       self.name = 'toto'
 
 
-Caution: the returned value is put in a list. This is not always supported by
-the web client, e.g. on button action methods. In that case, you should use
-``@api.multi`` to decorate your method, and probably call `self.ensure_one()`
-in the method definition.
+.. note::
+   Caution: the returned value is put in a list. This is not always supported by
+   the web client, e.g. on button action methods. In that case, you should use
+   ``@api.multi`` to decorate your method, and probably call `self.ensure_one()`
+   in the method definition.
 
 
 @api.multi
