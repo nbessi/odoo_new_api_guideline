@@ -120,3 +120,9 @@ Warning and Domain
 To change domain or send a warning just return the usual dictionary.
 Be careful not to use ``@api.one`` in that case as it will mangle the
 dictionary (put it in a list, which is not supported by the web client).
+
+
+@api.noguess
+------------
+
+This decorator prevent new API decorators to alter the output of a method
