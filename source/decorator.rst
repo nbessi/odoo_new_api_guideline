@@ -64,8 +64,8 @@ It allows to be polite when migrating code. ::
     def afun(self):
         pass
 
-@api.constraints
-----------------
+@api.constrains
+---------------
 
 This decorator will ensure that decorated function will be called on create, write, unlink operation.
 If a constraint is met the function should raise a `openerp.exceptions.Warning` with appropriate message.
