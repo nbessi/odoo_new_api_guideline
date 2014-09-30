@@ -456,10 +456,10 @@ committing is done by committing the cursor: ::
 New ids
 =======
 
-When creating a model with comuted fields the records of recordset will be in memory only.
-At that time the id of the record will be dummy ids of type :py:class:`openerp.models.NewId`
+When creating a record a model with computed fields, the records of the recordset will be in memory only.
+At that time the `id` of the record will be a dummy ids of type :py:class:`openerp.models.NewId`
 
-So if you need to use record id in your code (e.g. sql query) you should check if the id is available: ::
+So if you need to use the record `id` in your code (e.g. for a sql query) you should check if it is available: ::
 
    if isinstance(current_record.id, models.NewId):
        # do your stuff
