@@ -452,3 +452,14 @@ committing is done by committing the cursor: ::
 
    with Environment.manage():  # class function
        env = Environment(cr, uid, context)
+
+New ids
+=======
+
+When creating a record a model with computed fields, the records of the recordset will be in memory only.
+At that time the `id` of the record will be a dummy ids of type :py:class:`openerp.models.NewId`
+
+So if you need to use the record `id` in your code (e.g. for a sql query) you should check if it is available: ::
+
+   if isinstance(current_record.id, models.NewId):
+       # do your stuff
