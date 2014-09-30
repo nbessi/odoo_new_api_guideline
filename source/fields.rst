@@ -298,8 +298,8 @@ Be aware that this assignation will trigger a write into the database.
 If you need to do bulk change or must be careful about performance,
 you should do classic call to write
 
-To provide a search function on a non stored computed fields
-you have to add a ``fnct_search`` kwarg on your field. The value is the name of the function as a string or a function.
+To provide a search function on a non stored computed field
+you have to add a ``fnct_search`` kwarg on the field. The value is the name of the function as a string or a function.
 
 
 Inverse
