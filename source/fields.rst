@@ -21,6 +21,7 @@ Now fields are class property: ::
             translate=True,                  # Translation enable
             help='blabla',                   # Help tooltip text
             company_dependent=True,          # Transform columns to ir.property
+            fnct_search='_search_function'   # Custom search function mainly used with compute
         )
 
        # The string key is not mandatory
@@ -296,6 +297,9 @@ It should modify record property in order to be written to the cache: ::
 Be aware that this assignation will trigger a write into the database.
 If you need to do bulk change or must be careful about performance,
 you should do classic call to write
+
+To provide a search function on a non stored computed field
+you have to add a ``fnct_search`` kwarg on the field. The value is the name of the function as a string or a function.
 
 
 Inverse
