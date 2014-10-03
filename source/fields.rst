@@ -356,7 +356,7 @@ Property Field
 There is some use cases where value of the field must change depending of
 the current company.
 
-To activate such behavior you can now use the `company_depending` option.
+To activate such behavior you can now use the `company_dependent` option.
 
 A notable evolution in new API is that "property fields" are now searchable.
 
