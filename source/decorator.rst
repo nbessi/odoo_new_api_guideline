@@ -21,10 +21,12 @@ It will return a RecordSet of specified model based on original returned value: 
     @api.returns('res.partner')
     def afun(self):
         ...
-        return x  # can be id, list of ids, RecordSet or void
+        return x  # a RecordSet
 
 And if an old API function calls a new API function it will
 automatically convert it into a list of ids
+
+All decorators inherits from this decorator to upgrade or downgrade the returned value.
 
 @api.one
 --------
