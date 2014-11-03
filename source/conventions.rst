@@ -186,7 +186,7 @@ You should define the display_name field with options:
 Constraints
 -----------
 
-Should be done using ``@api.constraints`` decorator in
+Should be done using ``@api.constrains`` decorator in
 conjunction with the ``@api.one`` if performance allows it.
 
 
