@@ -170,7 +170,7 @@ When using cursor you should use current environment cursor: ::
 except if you need to use threads: ::
 
     with Environment.manage():  # class function
-        env = Environnement(cr, uid, context)
+        env = Environment(cr, uid, context)
 
 Displayed Name
 --------------
