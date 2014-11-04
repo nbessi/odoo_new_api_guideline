@@ -133,7 +133,7 @@ Putting string key is better than using a long property name: ::
     class AClass(models.Model):
 
         name = fields.Char(string="This is a really long long name")  # ok
-        really_long_long_long_name = fields.char()
+        really_long_long_long_name = fields.Char()
 
 That said the property name must be meaningful. Avoid name like 'nb' etc.
 
