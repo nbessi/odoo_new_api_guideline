@@ -364,6 +364,6 @@ WIP copyable option
 -------------------
 
 There is a dev running that will prevent to redefine copy by simply
-setting a copyable option on fields. It has not yet landed in new API: ::
+setting a copy option on fields: ::
 
-  copyable=False  # !! WIP to prevent redefine copy
+  copy=False  # !! WIP to prevent redefine copy
