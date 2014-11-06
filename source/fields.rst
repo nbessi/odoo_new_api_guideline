@@ -21,7 +21,7 @@ Now fields are class property: ::
             translate=True,                  # Translation enable
             help='blabla',                   # Help tooltip text
             company_dependent=True,          # Transform columns to ir.property
-            fnct_search='_search_function'   # Custom search function mainly used with compute
+            search='_search_function'        # Custom search function mainly used with compute
         )
 
        # The string key is not mandatory
@@ -299,8 +299,13 @@ If you need to do bulk change or must be careful about performance,
 you should do classic call to write
 
 To provide a search function on a non stored computed field
-you have to add a ``fnct_search`` kwarg on the field. The value is the name of the function as a string or a function.
+you have to add a ``search`` kwarg on the field. The value is the name of the function
+as a string or a reference to a previously defined method. The function takes the second
+and third member of a domain tuple and returns a domain itself ::
 
+        def search_total(self, operator, operand):
+	    ...
+            return domain  # e.g. [('id', 'in', ids)] 
 
 Inverse
 -------
