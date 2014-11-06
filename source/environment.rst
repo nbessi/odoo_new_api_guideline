@@ -104,6 +104,34 @@ RecordSet can also be sorted: ::
 
   sorted(recordset, key=lambda x: x.column)
 
+Useful helpers
+--------------
+
+The new API provides useful helper on recordset to use them in a more functional apprach
+
+You can filter an exisiting recordset quite easily: ::
+
+    recset.filtered(lambda record: record.company_id == user.company_id)
+    # or using string
+    recset.filtered("product_id.can_be_sold")
+
+You can sort a recordset: ::
+    
+    # sort records by name
+    recset.sorted(key=lambda r: r.name)
+
+You can also use the operator module: ::
+    
+    from operator import attrgetter
+    recset.sorted(key=attrgetter('partner_id', 'name'))
+    
+There is an helper to map recordsets: ::
+    
+    # returns a list of name
+    recset.mapped('name')
+
+    # returns a recordset of partners
+    recset.mapped('invoice_id.partner_id')
 
 The ids Attribute
 -----------------
