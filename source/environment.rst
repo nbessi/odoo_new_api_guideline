@@ -127,7 +127,7 @@ You can also use the operator module: ::
     
 There is an helper to map recordsets: ::
 
-    recs.mapped(lambda record: record.price_unit - record.cost_price)
+    recset.mapped(lambda record: record.price_unit - record.cost_price)
     
     # returns a list of name
     recset.mapped('name')
