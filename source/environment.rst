@@ -288,7 +288,14 @@ Accessing Current User
 ::
 
     self.env.user
+    
 
+Fetching record using XML id
+############################
+
+::
+
+    self.env.ref('base.main_company')
 
 Cleaning Environment Caches
 ---------------------------
