@@ -126,6 +126,8 @@ You can also use the operator module: ::
     recset.sorted(key=attrgetter('partner_id', 'name'))
     
 There is an helper to map recordsets: ::
+
+    recs.mapped(lambda record: record.price_unit - record.cost_price)
     
     # returns a list of name
     recset.mapped('name')
