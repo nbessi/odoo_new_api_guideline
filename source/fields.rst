@@ -202,10 +202,13 @@ Store a relation against a co-model: ::
 
     arel_id = fields.Many2one('res.users')
     arel_id = fields.Many2one(comodel_name='res.users')
+    an_other_rel_id = fields.Many2one(comodel_name='res.partner', delegate=True)
+
 
 Specific options:
 
   * comodel_name: name of the opposite model
+  * delegate: set it to ``True`` to make fields of the target model accessible from the current model (corresponds to ``_inherits``)
 
 One2many
 ########
