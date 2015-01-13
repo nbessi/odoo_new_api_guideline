@@ -133,7 +133,7 @@ The field provides some helpers:
     '2014-06-15'
     >>> fields.Date.from_string(fields.Date.today())
     datetime.datetime(2014, 6, 15, 19, 32, 17)
-    >>> fields.Datetime.to_string(datetime.datetime.today())
+    >>> fields.Date.to_string(datetime.datetime.today())
     '2014-06-15'
 
 DateTime
