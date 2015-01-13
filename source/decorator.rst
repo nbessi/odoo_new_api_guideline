@@ -99,7 +99,7 @@ You do not have to worry about modifying views anymore.
 This decorator will trigger the call to the decorated function if any of the
 fields specified in the decorator is changed in the form: ::
 
-  @api.onchange('fieldx'):
+  @api.onchange('fieldx')
   def do_stuff(self):
      if self.fieldx == x:
         self.fieldy = 'toto'
