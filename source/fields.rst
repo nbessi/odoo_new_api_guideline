@@ -79,7 +79,7 @@ HTML
 
 Used to store HTML, provides an HTML widget.: ::
 
-    anhtml = fields.HTML()
+    anhtml = fields.Html()
 
 
 Specific options:
