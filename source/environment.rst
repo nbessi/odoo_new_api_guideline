@@ -404,7 +404,7 @@ From RecordSet
 
 From RecordSet: ::
 
-    @api.mutli
+    @api.multi
     ...
     self.write({'key': value })
     # It will write on all record.
