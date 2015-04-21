@@ -55,7 +55,7 @@ Recordset
 ---------
 
 All instances of Model are at the same time instances of a RecordSet.
-A Recorset represents a sorted set of records of the same Model as the RecordSet.
+A Recordset represents a sorted set of records of the same Model as the RecordSet.
 
 You can call function on recordset: ::
 
