@@ -181,6 +181,13 @@ Specific options:
 
   * selection: a list of tuple or a callable name that take recordset as input
 
+When extending a model, if you want to add possible values to a selection field,
+you may use the `selection_add` keyword argument::
+
+   class SomeModel(models.Model):
+       _inherits = 'some.model'
+       type = fields.Selection(selection_add=[('b', 'B'), ('c', 'C')])
+
 Reference
 #########
 
