@@ -423,6 +423,13 @@ will not introspect to look for the relation. ::
   self.line_ids.create({'name': 'Tho', 'order_id': self.id})  # this will work
   self.line_ids.write({'name': 'Tho'})    # this will write all related lines
 
+When adding new relation records in an :ref:`@api.onchange` method, you can use
+the :py:meth:`openerp.models.BaseModel.new` constructor. This will create a record that is not committed to the
+database yet, having an id of type :py:class:`openerp.models.NewId`. ::
+
+    self.child_ids += self.new({'key': value})
+
+Such records will be committed when the form is saved.
 
 Copy
 ----
