@@ -254,7 +254,7 @@ To access the environment you may use: ::
          # or
          model.env
 
-Environnement sould be immutable and may not be modified in place as
+Environnement should be immutable and may not be modified in place as
 it also stores the caches of the RecordSet etc.
 
 
