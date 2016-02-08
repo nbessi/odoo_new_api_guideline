@@ -180,6 +180,7 @@ Selection must be set as a list of tuples or a callable that returns a list of t
 Specific options:
 
   * selection: a list of tuple or a callable name that take recordset as input
+  * size: the option size=1 is mandatory when using indexes that are integers, not strings
 
 When extending a model, if you want to add possible values to a selection field,
 you may use the `selection_add` keyword argument::
