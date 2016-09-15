@@ -25,7 +25,7 @@ Now fields are class property: ::
         )
 
        # The string key is not mandatory
-       # by default it wil use the property name Capitalized
+       # by default it will use the property name Capitalized
 
        name = fields.Char()  #  Valid definition
 
