@@ -21,7 +21,7 @@ All functions defined in a Model where previously callable directly by the Model
 
 This paradigm has changed as generally you should not access Model directly but a RecordSet see :ref:`recordset`
 
-To instantiate a model you must inherit an openerp.model.Model: ::
+To instantiate a model you must inherit an openerp.models.Model: ::
 
     from openerp import models, fields, api, _
 
@@ -40,7 +40,7 @@ The inheritance mechanism has not changed. You can use: ::
 
     class MyModelExtended(Model):
          _inherit = 'a.model'                       # direct heritage
-         _inherit = ['a.model, 'a.other.model']     # direct heritage
+         _inherit = ['a.model', 'a.other.model']    # direct heritage
          _inherits = {'a.model': 'field_name'}      # polymorphic heritage
 
 For more details about inheritance please have a look at
