@@ -1,46 +1,46 @@
 Fields
 ======
 
-Now fields are class property.
-It uses Python property under the hoods: ::
+Now fields are class property: ::
 
     from openerp import models, fields
 
 
     class AModel(models.Model):
 
-    _name = 'a_name'
+        _name = 'a_name'
 
-    name = fields.Char(
-        string="Name",                   #  Optional label of the field
-        compute="_compute_name_custom",  #  Transform the fields in computed fields
-        store=True,                      #  If computed it will store the result
-        select=True,                     # Force index on field
-        readonly=True,                   # Field will be readonly in views
-        inverse="_write_name"            #  On update trigger
-        required=True,                   #  Mandatory field
-        translate=True,                  #  Translation enable
-        help='blabla',                   #  Help tooltip text
-        company_dependent=True,          #  Transform columns to ir.property
-    )
+        name = fields.Char(
+            string="Name",                   # Optional label of the field
+            compute="_compute_name_custom",  # Transform the fields in computed fields
+            store=True,                      # If computed it will store the result
+            select=True,                     # Force index on field
+            readonly=True,                   # Field will be readonly in views
+            inverse="_write_name"            # On update trigger
+            required=True,                   # Mandatory field
+            translate=True,                  # Translation enable
+            help='blabla',                   # Help tooltip text
+            company_dependent=True,          # Transform columns to ir.property
+            search='_search_function'        # Custom search function mainly used with compute
+        )
 
-   # the string key is not mandatory
-   # by default it wil use the property name Capitalized
+       # The string key is not mandatory
+       # by default it wil use the property name Capitalized
 
-  name = fields.Char()  #  Valid definition
+       name = fields.Char()  #  Valid definition
 
 
 .. _fields_inherit:
 
-Fields inheritance
+Field inheritance
 ------------------
 
-One of the new feature of the API is to be able to change only an attribute of the fields: ::
+One of the new features of the API is to be able to change only one attribute of the field: ::
 
-   name = fields.Char(string)
+   name = fields.Char(string='New Value')
 
-Fields types
-------------
+Field types
+-----------
 
 Boolean
 #######
@@ -59,58 +59,82 @@ Store string with variable len.: ::
 
 Specific options:
 
- * size: data will be trimmed to sepcified size
- * translate: fields can be translated
+ * size: data will be trimmed to specified size
+ * translate: field can be translated
+
+Text
+####
+
+Used to store long text.: ::
+
+    atext = fields.Text()
+
+
+Specific options:
+
+ * translate: field can be translated
+
+HTML
+####
+
+Used to store HTML, provides an HTML widget.: ::
+
+    anhtml = fields.Html()
+
+
+Specific options:
+
+ * translate: field can be translated
 
 
 Integer
 #######
 
-Store integer value. No null value support. If value not set it returns 0: ::
+Store integer value. No NULL value support. If value is not set it returns 0: ::
 
-    anint = fields.Interger()
+    anint = fields.Integer()
 
 Float
 #####
 
-Store float value. No null value support. If value not set it returns 0.0
+Store float value. No NULL value support. If value is not set it returns 0.0
 If digits option is set it will use numeric type: ::
 
 
-    aflaot = fields.Float()
-    aflaot = fields.Float(digits=(32, 32))
-    aflaot = fields.Float(digits=lambda cr: (32, 32))
+    afloat = fields.Float()
+    afloat = fields.Float(digits=(32, 32))
+    afloat = fields.Float(digits=lambda cr: (32, 32))
 
 Specific options:
 
-  * digits: force use of numeric type on database. parameter can be a tuple (int len, float len) or a callable that return a tuple and take a cursor as parameter
+  * digits: force use of numeric type on database. Parameter can be a tuple (int len, float len) or a callable that return a tuple and take a cursor as parameter
 
 Date
 ####
 
 Store date.
-The field provide some helper:
+The field provides some helpers:
 
-  * context_today  returns current day date string based on tz
-  * today return current system date string
-  * from_string returns datetime.date() from string
-  * to_string retruns date string from datetime.date
+  * ``context_today`` returns current day date string based on tz
+  * ``today`` returns current system date string
+  * ``from_string`` returns datetime.date() from string
+  * ``to_string`` returns date string from datetime.date
 
 : ::
 
-    from openerp import fields
+    >>> from openerp import fields
 
-    adate = fields.Date()
-    fields.Date.today()
-    >>> '2014-06-15'
-    fields.Date.context_today(self)
-    >>> '2014-06-15'
-    fields.Date.context_today(self, timestamp=datetime.datetime.now())
-    >>> '2014-06-15'
-    fields.Date.from_string(fields.Date.today())
-    >>> datetime.datetime(2014, 6, 15, 19, 32, 17)
-    fields.Datetime.to_string(datetime.datetime.today())
-    >>> '2014-06-15'
+    >>> adate = fields.Date()
+    >>> fields.Date.today()
+    '2014-06-15'
+    >>> fields.Date.context_today(self)
+    '2014-06-15'
+    >>> fields.Date.context_today(self, timestamp=datetime.datetime.now())
+    '2014-06-15'
+    >>> fields.Date.from_string(fields.Date.today())
+    datetime.datetime(2014, 6, 15, 19, 32, 17)
+    >>> fields.Date.to_string(datetime.datetime.today())
+    '2014-06-15'
 
 DateTime
 ########
@@ -118,27 +142,27 @@ DateTime
 Store datetime.
 The field provide some helper:
 
-  * context_timestamp  returns current day date string based on tz
-  * now return current system date string
-  * from_string returns datetime.date() from string
-  * to_string retruns date string from datetime.date
+  * ``context_timestamp`` returns current day date string based on tz
+  * ``now`` returns current system date string
+  * ``from_string`` returns datetime.date() from string
+  * ``to_string`` returns date string from datetime.date
 
 : ::
 
-    fields.Datetime.context_timestamp(self, timestamp=datetime.datetime.now())
-    >>> datetime.datetime(2014, 6, 15, 21, 26, 1, 248354, tzinfo=<DstTzInfo 'Europe/Brussels' CEST+2:00:00 DST>)
-    fields.Datetime.now()
-    >>> '2014-06-15 19:26:13'
-    fields.Datetime.from_string(fields.Datetime.now())
-    >>> datetime.datetime(2014, 6, 15, 19, 32, 17)
-    fields.Datetime.to_string(datetime.datetime.now())
-    >>> '2014-06-15 19:26:13'
+    >>> fields.Datetime.context_timestamp(self, timestamp=datetime.datetime.now())
+    datetime.datetime(2014, 6, 15, 21, 26, 1, 248354, tzinfo=<DstTzInfo 'Europe/Brussels' CEST+2:00:00 DST>)
+    >>> fields.Datetime.now()
+    '2014-06-15 19:26:13'
+    >>> fields.Datetime.from_string(fields.Datetime.now())
+    datetime.datetime(2014, 6, 15, 19, 32, 17)
+    >>> fields.Datetime.to_string(datetime.datetime.now())
+    '2014-06-15 19:26:13'
 
 
 Binary
 ######
 
-Store file in bytea format: ::
+Store file encoded in base64 in bytea column: ::
 
     abin = fields.Binary()
 
@@ -156,6 +180,14 @@ Selection must be set as a list of tuples or a callable that returns a list of t
 Specific options:
 
   * selection: a list of tuple or a callable name that take recordset as input
+  * size: the option size=1 is mandatory when using indexes that are integers, not strings
+
+When extending a model, if you want to add possible values to a selection field,
+you may use the `selection_add` keyword argument::
+
+   class SomeModel(models.Model):
+       _inherits = 'some.model'
+       type = fields.Selection(selection_add=[('b', 'B'), ('c', 'C')])
 
 Reference
 #########
@@ -178,10 +210,13 @@ Store a relation against a co-model: ::
 
     arel_id = fields.Many2one('res.users')
     arel_id = fields.Many2one(comodel_name='res.users')
+    an_other_rel_id = fields.Many2one(comodel_name='res.partner', delegate=True)
+
 
 Specific options:
 
   * comodel_name: name of the opposite model
+  * delegate: set it to ``True`` to make fields of the target model accessible from the current model (corresponds to ``_inherits``)
 
 One2many
 ########
@@ -200,7 +235,7 @@ Specific options:
 Many2many
 #########
 
-Store a relation against many 2 many rows of co-model: ::
+Store a relation against many2many rows of co-model: ::
 
     arel_ids = fields.Many2many('res.users')
     arel_ids = fields.Many2many(comodel_name='res.users',
@@ -219,9 +254,11 @@ Specific options:
 
 Name Conflicts
 --------------
-!! fields anf method name can conflict.
 
-When you call an record as a dict it will force to look on the columns.
+.. note::
+   fields and method name can conflict.
+
+When you call a record as a dict it will force to look on the columns.
 
 
 Fields Defaults
@@ -241,7 +278,7 @@ You can attribute it a value or a function
    def a_fun(self):
       return self.do_something()
 
-Using a fun will force you to define function brfore fields definition.
+Using a fun will force you to define function before fields definition.
 
 
 
@@ -250,7 +287,7 @@ Computed Fields
 ---------------
 There is no more direct creation of fields.function.
 
-Instead you add a `compute` key. the value is the name of the function as a string.
+Instead you add a ``compute`` kwarg. The value is the name of the function as a string or a function.
 This allows to have fields definition atop of class: ::
 
     class AModel(models.Model):
@@ -264,74 +301,85 @@ This allows to have fields definition atop of class: ::
 
 
 The function can be void.
-It should modifiy record property in order to be written to the cache: ::
+It should modify record property in order to be written to the cache: ::
+
   self.name = new_value
 
 Be aware that this assignation will trigger a write into the database.
-If you need to do bulk change or must be carful about performance.
-You should do classic call to write
+If you need to do bulk change or must be careful about performance,
+you should do classic call to write
 
+To provide a search function on a non stored computed field
+you have to add a ``search`` kwarg on the field. The value is the name of the function
+as a string or a reference to a previously defined method. The function takes the second
+and third member of a domain tuple and returns a domain itself ::
+
+        def search_total(self, operator, operand):
+	    ...
+            return domain  # e.g. [('id', 'in', ids)] 
 
 Inverse
 -------
 
-The inverse key allows to trigger call of the function
-When the fields is written/"created"
+The inverse key allows to trigger call of the decorated function
+when the field is written/"created"
 
 
 Multi Fields
 ------------
-To have one function that compute multiples values: ::
+To have one function that compute multiple values: ::
+
     @api.multi
-    @api.depends('field.relation', 'an_otherfields.relation' )
+    @api.depends('field.relation', 'an_otherfield.relation')
     def _amount(self):
-       for x in self:
-         x.total = an_algo
-         x.untaxed = an_algo
+        for x in self:
+            x.total = an_algo
+            x.untaxed = an_algo
 
 
 Related Field
 -------------
 
-There is not anymore related fields.related type.
+There is not anymore ``fields.related`` fields.
 
 Instead you just set the name argument related to your model: ::
 
-  participant_nick = field.Char(string='Nick name',
-                                related='partner_id.name')
+  participant_nick = fields.Char(string='Nick name',
+                                 related='partner_id.name')
 
-The type field named arg is not needed anymore.
+The ``type`` kwarg is not needed anymore.
 
-Setting the store key word will store the value
-and from now the value of the related fields will be autmatically
-updated. sweet. ::
+Setting the ``store`` kwarg will automatically store the value in database.
+With new API the value of the related field will be automatically
+updated, sweet. ::
 
-  participant_nick = field.Char(string='Nick name',
-                                store=True,
-                                related='partner_id.name')
+  participant_nick = fields.Char(string='Nick name',
+                                 store=True,
+                                 related='partner_id.name')
 
-!! When updating any related field not all
-translations of related field are yet translated if field
-is stored!!
+.. note::
+   When updating any related field not all
+   translations of related field are translated if field
+   is stored!!
 
-Chain related fields modification will trigger invalidation of the cache
-for all elements of the chain
+Chained related fields modification will trigger invalidation of the cache
+for all elements of the chain.
 
 
 Property Field
 --------------
 
-There is some use cases where value of the fields must change depending of
+There is some use cases where value of the field must change depending of
 the current company.
 
-To activate such behavior you can now use the `company_depending` option.
+To activate such behavior you can now use the `company_dependent` option.
 
-A notable evolution in new API is that "property fields" are now serchable
+A notable evolution in new API is that "property fields" are now searchable.
 
 WIP copyable option
 -------------------
 
 There is a dev running that will prevent to redefine copy by simply
-setting an copyable option on fields. It has not yet landed in new API: ::
+setting a copy option on fields: ::
 
-  copyable=False  # !! WIP to prevent redefine copy
+  copy=False  # !! WIP to prevent redefine copy
